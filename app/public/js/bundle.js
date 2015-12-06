@@ -42,9 +42,9 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/*!*********************************!*\
-  !*** ./app/public/js/index.jsx ***!
-  \*********************************/
+/*!**************************!*\
+  !*** ./client/entry.jsx ***!
+  \**************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57,7 +57,7 @@
 	
 	var _reactDom = __webpack_require__(/*! react-dom */ 158);
 	
-	var _AwesomeComponent = __webpack_require__(/*! ./AwesomeComponent.jsx */ 159);
+	var _AwesomeComponent = __webpack_require__(/*! ./components/AwesomeComponent.jsx */ 159);
 	
 	var _AwesomeComponent2 = _interopRequireDefault(_AwesomeComponent);
 	
@@ -83,7 +83,7 @@
 	    value: function render() {
 	      return _react2.default.createElement(
 	        'div',
-	        null,
+	        { id: 'react_daily' },
 	        _react2.default.createElement(
 	          'p',
 	          null,
@@ -99,7 +99,7 @@
 	
 	;
 	
-	(0, _reactDom.render)(_react2.default.createElement(App, null), document.getElementById('app'));
+	(0, _reactDom.render)(_react2.default.createElement(App, null), document.getElementById('react_daily'));
 
 /***/ },
 /* 1 */
@@ -20164,12 +20164,12 @@
 
 /***/ },
 /* 159 */
-/*!********************************************!*\
-  !*** ./app/public/js/AwesomeComponent.jsx ***!
-  \********************************************/
+/*!************************************************!*\
+  !*** ./client/components/AwesomeComponent.jsx ***!
+  \************************************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 	
 	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 	
@@ -20203,30 +20203,30 @@
 	  }
 	
 	  _createClass(AwesomeComponent, [{
-	    key: 'onLike',
+	    key: "onLike",
 	    value: function onLike() {
 	      var newLikesCount = this.state.likesCount + 1;
 	      this.setState({ likesCount: newLikesCount });
 	    }
 	  }, {
-	    key: 'render',
+	    key: "render",
 	    value: function render() {
 	      return _react2.default.createElement(
-	        'div',
+	        "div",
 	        null,
-	        'Likes : ',
+	        "Likes : ",
 	        _react2.default.createElement(
-	          'span',
+	          "span",
 	          null,
 	          this.state.likesCount
 	        ),
 	        _react2.default.createElement(
-	          'div',
+	          "div",
 	          null,
 	          _react2.default.createElement(
-	            'button',
-	            { onClick: this.onLike },
-	            'Like Me'
+	            "button",
+	            { className: "button", onClick: this.onLike },
+	            "Like Me"
 	          )
 	        )
 	      );
