@@ -1,0 +1,32 @@
+{
+  "name": "habitual",
+  "version": "1.0.0",
+  "description": "Habitual is a habit tracking app.",
+  "main": "index.js",
+  "dependencies": {
+    "babel-loader": "^6.2.0",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-react": "^6.3.13",
+    "react": "^0.14.3",
+    "react-dom": "^0.14.3",
+    "webpack": "^1.12.9"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/veneziacarl/habitual.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/veneziacarl/habitual/issues"
+  },
+  "scripts": {
+  "dev": "webpack -d --watch",
+  "build" : "webpack -p"
+  },
+  "homepage": "https://github.com/veneziacarl/habitual#readme"
+}
