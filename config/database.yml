@@ -2,7 +2,7 @@
 development:
   adapter: postgresql
   encoding: unicode
-  database: contact_manager_development
+  database: habits_development
   pool: 5
   username:
   password:
@@ -11,7 +11,7 @@ development:
 test:
   adapter: postgresql
   encoding: unicode
-  database: contact_manager_test
+  database: habits_test
   pool: 5
   username:
   password:
@@ -20,7 +20,7 @@ test:
 production:
   adapter: postgresql
   encoding: unicode
-  database: contact_manager_production
+  database: habits_production
   pool: 5
   username:
   password:

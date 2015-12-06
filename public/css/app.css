@@ -1,0 +1,17 @@
+a.back_button {
+  margin-top: 20px;
+  margin-bottom: 0px;
+}
+
+.table th {
+  text-align: center;
+}
+
+.table {
+  width: 500px;
+  margin: 0px auto;
+}
+
+h1 {
+  text-align: center;
+}
