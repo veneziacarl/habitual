@@ -25,7 +25,10 @@ class HabitBox extends React.Component {
     });
   }
 
+        // var habitsArray = this.state.habits;
+        // var newHabits = habitsArray.concat(habits);
   handleHabitSubmit (habit) {
+    debugger;
     $.ajax({
       url: '/daily.json',
       dataType: 'json',

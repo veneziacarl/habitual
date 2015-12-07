@@ -105,9 +105,14 @@
 	        }).bind(this)
 	      });
 	    }
+	
+	    // var habitsArray = this.state.habits;
+	    // var newHabits = habitsArray.concat(habits);
+	
 	  }, {
 	    key: 'handleHabitSubmit',
 	    value: function handleHabitSubmit(habit) {
+	      debugger;
 	      _jquery2.default.ajax({
 	        url: '/daily.json',
 	        dataType: 'json',
@@ -29446,7 +29451,7 @@
   \*****************************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 	
@@ -29474,44 +29479,50 @@
 	
 	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(HabitForm).call(this, props));
 	
-	    _this.state = { title: "", description: "" };
+	    _this.state = { title: '', description: '' };
+	    // this.onChange = this.onChange.bind(this);
 	    return _this;
 	  }
 	
 	  _createClass(HabitForm, [{
-	    key: "handleTitleChange",
+	    key: 'handleTitleChange',
 	    value: function handleTitleChange(e) {
 	      this.setState({ title: e.target.value });
 	    }
 	  }, {
-	    key: "handleDescriptionChange",
+	    key: 'handleDescriptionChange',
 	    value: function handleDescriptionChange(e) {
 	      this.setState({ description: e.target.value });
 	    }
 	  }, {
-	    key: "handleSubmit",
+	    key: 'handleSubmit',
 	    value: function handleSubmit(e) {
 	      e.preventDefault();
 	      var title = this.state.title.trim();
 	      var description = this.state.description.trim();
 	      if (!title || !description) {
 	        return;
-	      }
+	      };
 	      this.props.onHabitSubmit({ title: title, description: description });
 	      this.setState({ title: '', description: '' });
 	    }
+	    //
+	    //   onChange(state) {
+	    //   this.setState(state);
+	    // }
+	
 	  }, {
-	    key: "render",
+	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
-	        "div",
-	        { className: "habitForm" },
+	        'div',
+	        { className: 'habitForm' },
 	        _react2.default.createElement(
-	          "form",
-	          { className: "habitForm", onSubmit: this.handleSubmit },
-	          _react2.default.createElement("input", { type: "text", placeholder: "Habit Title", value: this.state.title, onChange: this.handleTitleChange }),
-	          _react2.default.createElement("input", { type: "text", placeholder: "Habit Description", value: this.state.description, onChange: this.handleDescriptionChange }),
-	          _react2.default.createElement("input", { type: "submit", value: "Post" })
+	          'form',
+	          { className: 'habitForm', onSubmit: this.handleSubmit.bind(this) },
+	          _react2.default.createElement('input', { type: 'text', placeholder: 'Habit Title', value: this.state.title, onChange: this.handleTitleChange.bind(this) }),
+	          _react2.default.createElement('input', { type: 'text', placeholder: 'Habit Description', value: this.state.description, onChange: this.handleDescriptionChange.bind(this) }),
+	          _react2.default.createElement('input', { type: 'submit', value: 'Post' })
 	        )
 	      );
 	    }

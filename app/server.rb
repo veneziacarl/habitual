@@ -23,5 +23,6 @@ get '/daily.json' do
 end
 
 post '/daily.json' do
-  Habit.create(params)
+  @habit = Habit.create(params)
+  @habit.to_json
 end
