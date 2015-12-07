@@ -77,8 +77,6 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var habits = [{ id: 1, title: "Brush Teeth", description: "Nice and clean" }, { id: 2, title: "Make Bed", description: "Keepin' it fresh" }];
-	
 	var HabitBox = (function (_React$Component) {
 	  _inherits(HabitBox, _React$Component);
 	
@@ -108,6 +106,22 @@
 	      });
 	    }
 	  }, {
+	    key: 'handleHabitSubmit',
+	    value: function handleHabitSubmit(habit) {
+	      _jquery2.default.ajax({
+	        url: '/daily.json',
+	        dataType: 'json',
+	        type: 'POST',
+	        data: habit,
+	        success: (function (habits) {
+	          this.setState({ habits: habits });
+	        }).bind(this),
+	        error: (function (xhr, status, err) {
+	          console.error(this.props, status, err.toString());
+	        }).bind(this)
+	      });
+	    }
+	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      this.loadHabitsFromServer();
@@ -123,7 +137,7 @@
 	          null,
 	          'Hello, world! I am a HabitBox.'
 	        ),
-	        _react2.default.createElement(_HabitForm2.default, null),
+	        _react2.default.createElement(_HabitForm2.default, { onHabitSubmit: this.handleHabitSubmit }),
 	        _react2.default.createElement(
 	          'h1',
 	          null,
@@ -29455,19 +29469,50 @@
 	var HabitForm = (function (_React$Component) {
 	  _inherits(HabitForm, _React$Component);
 	
-	  function HabitForm() {
+	  function HabitForm(props) {
 	    _classCallCheck(this, HabitForm);
 	
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(HabitForm).apply(this, arguments));
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(HabitForm).call(this, props));
+	
+	    _this.state = { title: "", description: "" };
+	    return _this;
 	  }
 	
 	  _createClass(HabitForm, [{
+	    key: "handleTitleChange",
+	    value: function handleTitleChange(e) {
+	      this.setState({ title: e.target.value });
+	    }
+	  }, {
+	    key: "handleDescriptionChange",
+	    value: function handleDescriptionChange(e) {
+	      this.setState({ description: e.target.value });
+	    }
+	  }, {
+	    key: "handleSubmit",
+	    value: function handleSubmit(e) {
+	      e.preventDefault();
+	      var title = this.state.title.trim();
+	      var description = this.state.description.trim();
+	      if (!title || !description) {
+	        return;
+	      }
+	      this.props.onHabitSubmit({ title: title, description: description });
+	      this.setState({ title: '', description: '' });
+	    }
+	  }, {
 	    key: "render",
 	    value: function render() {
 	      return _react2.default.createElement(
 	        "div",
 	        { className: "habitForm" },
-	        "Hello, world! I am a HabitForm."
+	        _react2.default.createElement(
+	          "form",
+	          { className: "habitForm", onSubmit: this.handleSubmit },
+	          _react2.default.createElement("input", { type: "text", placeholder: "Habit Title", value: this.state.title, onChange: this.handleTitleChange }),
+	          _react2.default.createElement("input", { type: "text", placeholder: "Habit Description", value: this.state.description, onChange: this.handleDescriptionChange }),
+	          _react2.default.createElement("input", { type: "submit", value: "Post" })
+	        )
 	      );
 	    }
 	  }]);

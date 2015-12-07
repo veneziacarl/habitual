@@ -22,6 +22,6 @@ get '/daily.json' do
   @habits.to_json
 end
 
-post '/new' do
-
+post '/daily.json' do
+  Habit.create(params)
 end
