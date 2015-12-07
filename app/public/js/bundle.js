@@ -106,10 +106,6 @@
 	        }).bind(this)
 	      });
 	    }
-	
-	    // var habitsArray = this.state.habits;
-	    // var newHabits = habitsArray.concat(habits);
-	
 	  }, {
 	    key: 'handleHabitSubmit',
 	    value: function handleHabitSubmit(habit) {
@@ -119,7 +115,9 @@
 	        type: 'POST',
 	        data: habit,
 	        success: (function (habits) {
-	          this.setState({ habits: [habits] });
+	          var habitsArray = this.state.habits;
+	          var newHabits = habitsArray.concat(habits);
+	          this.setState({ habits: newHabits });
 	        }).bind(this),
 	        error: (function (xhr, status, err) {
 	          console.error(this.props, status, err.toString());
