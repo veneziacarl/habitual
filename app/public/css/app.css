@@ -20,3 +20,7 @@ h1 {
     float: none;
     margin: 0 auto;
 }
+
+h4 {
+  text-align: center;
+}
