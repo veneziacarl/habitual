@@ -103,7 +103,7 @@
 	          this.setState({ habits: habits });
 	        }).bind(this),
 	        error: (function (xhr, status, err) {
-	          console.error(this.props.url, status, err.toString());
+	          console.error(this.props, status, err.toString());
 	        }).bind(this)
 	      });
 	    }
@@ -111,7 +111,6 @@
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      this.loadHabitsFromServer();
-	      setInterval(this.loadHabitsFromServer, this.props.pollInterval);
 	    }
 	  }, {
 	    key: 'render',
@@ -142,7 +141,7 @@
 	
 	(0, _jquery2.default)(function () {
 	  if ((0, _jquery2.default)('#react_daily').length) {
-	    (0, _reactDom.render)(_react2.default.createElement(HabitBox, { url: '/new', pollInterval: 2000 }), document.getElementById('react_daily'));
+	    (0, _reactDom.render)(_react2.default.createElement(HabitBox, null), document.getElementById('react_daily'));
 	  }
 	});
 

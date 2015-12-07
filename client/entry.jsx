@@ -25,14 +25,13 @@ class HabitBox extends React.Component {
         this.setState({habits: habits});
       }.bind(this),
       error: function(xhr, status, err) {
-        console.error(this.props.url, status, err.toString());
+        console.error(this.props, status, err.toString());
       }.bind(this)
     });
   }
 
   componentDidMount () {
     this.loadHabitsFromServer();
-    setInterval(this.loadHabitsFromServer, this.props.pollInterval);
   }
 
   render () {
@@ -49,6 +48,6 @@ class HabitBox extends React.Component {
 
 $(function() {
   if ($('#react_daily').length) {
-    render(<HabitBox url="/new" pollInterval={2000} />, document.getElementById('react_daily'));
+    render(<HabitBox />, document.getElementById('react_daily'));
   }
 });
