@@ -3,6 +3,10 @@ import Habit from './Habit.jsx';
 
 
 class HabitList extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     var habitNodes = this.props.habits.map(function(habit) {
       return (

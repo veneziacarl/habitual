@@ -8,6 +8,7 @@ class HabitBox extends React.Component {
   constructor(props) {
     super(props);
     this.state = {habits: []};
+    this.handleHabitSubmit = this.handleHabitSubmit.bind(this);
   }
 
   loadHabitsFromServer () {
@@ -28,14 +29,13 @@ class HabitBox extends React.Component {
         // var habitsArray = this.state.habits;
         // var newHabits = habitsArray.concat(habits);
   handleHabitSubmit (habit) {
-    debugger;
     $.ajax({
       url: '/daily.json',
       dataType: 'json',
       type: 'POST',
       data: habit,
       success: function(habits) {
-        this.setState({habits: habits});
+        this.setState({habits: [habits]});
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(this.props, status, err.toString());

@@ -86,6 +86,7 @@
 	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(HabitBox).call(this, props));
 	
 	    _this.state = { habits: [] };
+	    _this.handleHabitSubmit = _this.handleHabitSubmit.bind(_this);
 	    return _this;
 	  }
 	
@@ -112,14 +113,13 @@
 	  }, {
 	    key: 'handleHabitSubmit',
 	    value: function handleHabitSubmit(habit) {
-	      debugger;
 	      _jquery2.default.ajax({
 	        url: '/daily.json',
 	        dataType: 'json',
 	        type: 'POST',
 	        data: habit,
 	        success: (function (habits) {
-	          this.setState({ habits: habits });
+	          this.setState({ habits: [habits] });
 	        }).bind(this),
 	        error: (function (xhr, status, err) {
 	          console.error(this.props, status, err.toString());
@@ -29567,10 +29567,10 @@
 	var HabitList = (function (_React$Component) {
 	  _inherits(HabitList, _React$Component);
 	
-	  function HabitList() {
+	  function HabitList(props) {
 	    _classCallCheck(this, HabitList);
 	
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(HabitList).apply(this, arguments));
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(HabitList).call(this, props));
 	  }
 	
 	  _createClass(HabitList, [{
