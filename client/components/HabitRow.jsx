@@ -7,9 +7,14 @@ class HabitRow extends React.Component {
   }
 
   render () {
+    var habitNodes = this.props.habits.map(function(habit) {
+      return (
+        <HabitDetails title={habit.title} key={habit.id} description={habit.description} />
+      );
+    });
     return (
       <div className="habitRow">
-        <HabitDetails habits={this.props.habits} />
+        {habitNodes}
       </div>
     );
   }

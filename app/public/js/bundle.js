@@ -29631,7 +29631,20 @@
 	  _createClass(HabitDetails, [{
 	    key: "render",
 	    value: function render() {
-	      return _react2.default.createElement("div", { className: "habitDetails" });
+	      return _react2.default.createElement(
+	        "div",
+	        { className: "habitDetails" },
+	        _react2.default.createElement(
+	          "p",
+	          null,
+	          this.props.title
+	        ),
+	        _react2.default.createElement(
+	          "p",
+	          null,
+	          this.props.description
+	        )
+	      );
 	    }
 	  }]);
 	
@@ -29689,10 +29702,13 @@
 	  _createClass(HabitRow, [{
 	    key: 'render',
 	    value: function render() {
+	      var habitNodes = this.props.habits.map(function (habit) {
+	        return _react2.default.createElement(_HabitDetails2.default, { title: habit.title, key: habit.id, description: habit.description });
+	      });
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'habitRow' },
-	        _react2.default.createElement(_HabitDetails2.default, { habits: this.props.habits })
+	        habitNodes
 	      );
 	    }
 	  }]);
