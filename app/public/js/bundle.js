@@ -99,7 +99,6 @@
 	  _createClass(HabitBox, [{
 	    key: 'loadHabitsFromServer',
 	    value: function loadHabitsFromServer() {
-	      debugger;
 	      _jquery2.default.ajax({
 	        url: '/daily.json',
 	        method: 'GET',
@@ -139,7 +138,6 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      debugger;
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'habitBox' },
@@ -29686,10 +29684,7 @@
 	  function HabitRow(props) {
 	    _classCallCheck(this, HabitRow);
 	
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(HabitRow).call(this, props));
-	
-	    debugger;
-	    return _this;
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(HabitRow).call(this, props));
 	  }
 	
 	  _createClass(HabitRow, [{

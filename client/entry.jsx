@@ -17,7 +17,6 @@ class HabitBox extends React.Component {
   }
 
   loadHabitsFromServer () {
-    debugger;
     $.ajax({
       url: '/daily.json',
       method: 'GET',
@@ -54,7 +53,6 @@ class HabitBox extends React.Component {
   }
 
   render () {
-    debugger;
     return (
       <div className="habitBox">
         <p>Hello, world! I am a HabitBox.</p>

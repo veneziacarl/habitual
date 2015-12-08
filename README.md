@@ -5,7 +5,10 @@ the command npm run dev runs the Webpack in the watch mode.
 
 
 TODO:
-[] complete HabitRow component
+[x] complete Entry component
+[x] complete HabitForm component
+[x] complete HabitLabelRow component
+[x] complete HabitList component
 [] complete HabitDetails component
 [] complete HabitStatus component
 [] complete HabitUpdate component

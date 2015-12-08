@@ -4,7 +4,6 @@ import HabitDetails from './HabitDetails.jsx';
 class HabitRow extends React.Component {
   constructor(props) {
     super(props);
-    debugger;
   }
 
   render () {
