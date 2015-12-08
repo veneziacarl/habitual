@@ -153,8 +153,7 @@
 	          'Habits'
 	        ),
 	        _react2.default.createElement(_HabitLabelRow2.default, { labels: this.state.labels }),
-	        _react2.default.createElement(_HabitList2.default, { habits: this.state.habits }),
-	        'debugger;'
+	        _react2.default.createElement(_HabitList2.default, { habits: this.state.habits })
 	      );
 	    }
 	  }]);

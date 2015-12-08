@@ -60,7 +60,6 @@ class HabitBox extends React.Component {
         <h1>Habits</h1>
         <HabitLabelRow labels={this.state.labels}/>
         <HabitList habits={this.state.habits} />
-        debugger;
       </div>
     );
   }
