@@ -4,7 +4,6 @@ class HabitForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {title: '', description: ''};
-    // this.onChange = this.onChange.bind(this);
   }
 
   handleTitleChange (e) {
@@ -25,10 +24,6 @@ class HabitForm extends React.Component {
     this.props.onHabitSubmit({title: title, description: description});
     this.setState({title: '', description: ''});
   }
-//
-//   onChange(state) {
-//   this.setState(state);
-// }
 
   render() {
     return (

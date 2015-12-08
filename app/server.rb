@@ -26,3 +26,8 @@ post '/daily.json' do
   @habit = Habit.create(params)
   @habit.to_json
 end
+
+delete "/groceries" do
+  name = params[:name]
+  delete_grocery(name)
+end
