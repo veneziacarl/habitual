@@ -27,7 +27,10 @@ post '/daily.json' do
   @habit.to_json
 end
 
-delete "/groceries" do
-  name = params[:name]
-  delete_grocery(name)
+delete "/daily.json" do
+  
+end
+
+put "/daily.json" do
+
 end

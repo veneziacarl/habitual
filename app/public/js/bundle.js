@@ -29682,6 +29682,14 @@
 	
 	var _HabitDetails2 = _interopRequireDefault(_HabitDetails);
 	
+	var _HabitDelete = __webpack_require__(/*! ./HabitDelete.jsx */ 165);
+	
+	var _HabitDelete2 = _interopRequireDefault(_HabitDelete);
+	
+	var _HabitUpdate = __webpack_require__(/*! ./HabitUpdate.jsx */ 166);
+	
+	var _HabitUpdate2 = _interopRequireDefault(_HabitUpdate);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -29702,13 +29710,31 @@
 	  _createClass(HabitRow, [{
 	    key: 'render',
 	    value: function render() {
-	      var habitNodes = this.props.habits.map(function (habit) {
-	        return _react2.default.createElement(_HabitDetails2.default, { title: habit.title, key: habit.id, description: habit.description });
+	      debugger;
+	      var Row = function Row(_ref) {
+	        var children = _ref.children;
+	
+	        return _react2.default.createElement(
+	          'div',
+	          { className: 'row' },
+	          ' ',
+	          children,
+	          ' '
+	        );
+	      };
+	      var habitRows = this.props.habits.map(function (habit) {
+	        return _react2.default.createElement(
+	          Row,
+	          null,
+	          _react2.default.createElement(_HabitDetails2.default, habit),
+	          _react2.default.createElement(_HabitDelete2.default, null),
+	          _react2.default.createElement(_HabitUpdate2.default, null)
+	        );
 	      });
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'habitRow' },
-	        habitNodes
+	        habitRows
 	      );
 	    }
 	  }]);
@@ -29718,6 +29744,11 @@
 	
 	exports.default = HabitRow;
 	
+	// <HabitDelete />
+	// <HabitDelete />
+	// <HabitDelete key={habit.id} />
+	// <HabitUpdate key={habit.id} />
+
 	// <div className="habitRow">
 	//   <HabitDetails title={habit.title} key={habit.id} description={habit.description} />
 	// </div>
@@ -29785,6 +29816,110 @@
 	})(_react2.default.Component);
 	
 	exports.default = HabitLabelRow;
+
+/***/ },
+/* 165 */
+/*!*******************************************!*\
+  !*** ./client/components/HabitDelete.jsx ***!
+  \*******************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(/*! react */ 1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var HabitDelete = (function (_React$Component) {
+	  _inherits(HabitDelete, _React$Component);
+	
+	  function HabitDelete(props) {
+	    _classCallCheck(this, HabitDelete);
+	
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(HabitDelete).call(this, props));
+	  }
+	
+	  _createClass(HabitDelete, [{
+	    key: "render",
+	    value: function render() {
+	      return _react2.default.createElement(
+	        "div",
+	        { className: "habitDelete" },
+	        _react2.default.createElement("input", { type: "button", value: "delete" })
+	      );
+	    }
+	  }]);
+	
+	  return HabitDelete;
+	})(_react2.default.Component);
+	
+	exports.default = HabitDelete;
+
+/***/ },
+/* 166 */
+/*!*******************************************!*\
+  !*** ./client/components/HabitUpdate.jsx ***!
+  \*******************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(/*! react */ 1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var HabitUpdate = (function (_React$Component) {
+	  _inherits(HabitUpdate, _React$Component);
+	
+	  function HabitUpdate(props) {
+	    _classCallCheck(this, HabitUpdate);
+	
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(HabitUpdate).call(this, props));
+	  }
+	
+	  _createClass(HabitUpdate, [{
+	    key: "render",
+	    value: function render() {
+	      return _react2.default.createElement(
+	        "div",
+	        { className: "habitUpdate" },
+	        _react2.default.createElement("input", { type: "button", value: "update" })
+	      );
+	    }
+	  }]);
+	
+	  return HabitUpdate;
+	})(_react2.default.Component);
+	
+	exports.default = HabitUpdate;
 
 /***/ }
 /******/ ]);

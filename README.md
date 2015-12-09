@@ -4,19 +4,21 @@
 the command npm run dev runs the Webpack in the watch mode.</p>
 
 
-TODO:
-* <p> [x] complete Entry component </p>
-* <p> [x] complete HabitForm component </p>
-* <p> [x] complete HabitLabelRow component </p>
-* <p> [x] complete HabitList component </p>
-* <p> [x] complete HabitDetails component </p>
-* <p> [ ] complete HabitStatus component </p>
-* <p> [ ] complete HabitUpdate component </p>
-* <p> [ ] complete HabitDelete component </p>
-* <p> [ ] write tests </p>
-* <p> [ ] add styling </p>
-* <p> [ ] create user log in </p>
+**TODO:**
+<p>
+* [x] complete Entry component
+* [x] complete HabitForm component
+* [x] complete HabitLabelRow component
+* [x] complete HabitList component
+* [x] complete HabitDetails component
+* [ ] complete HabitStatus component
+* [ ] complete HabitUpdate component
+* [ ] complete HabitDelete component
+* [ ] write tests
+* [ ] add styling
+* [ ] create user log in
+</p>
 
-
-<p>current issues:
+<p>
+*current issues:*
 </p>
