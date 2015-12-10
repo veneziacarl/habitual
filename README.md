@@ -11,9 +11,11 @@ the command npm run dev runs the Webpack in the watch mode.</p>
 * [x] complete HabitLabelRow component
 * [x] complete HabitList component
 * [x] complete HabitDetails component
-* [ ] complete HabitStatus component
+* [x] switch from using `tables` to using `spans` and `divs`
+* [ ] complete HabitStatus component - add in `skip` capability
 * [ ] complete HabitUpdate component
 * [ ] complete HabitDelete component
+* [ ] complete table drop down on click animation
 * [ ] write tests
 * [ ] add styling
 * [ ] create user log in

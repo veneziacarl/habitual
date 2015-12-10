@@ -1,7 +1,8 @@
 import React from 'react';
 import HabitDetails from './HabitDetails.jsx';
-import HabitDelete from './HabitDelete.jsx';
-import HabitUpdate from './HabitUpdate.jsx';
+import HabitDayStatus from './HabitDayStatus.jsx';
+// import HabitDelete from './HabitDelete.jsx';
+// import HabitUpdate from './HabitUpdate.jsx';
 
 class HabitRow extends React.Component {
   constructor(props) {
@@ -9,27 +10,38 @@ class HabitRow extends React.Component {
   }
 
   render () {
-    debugger;
     const Row = ({ children }) => {
-      return <div className="row"> {children} </div>
+      return (
+        <tr>
+          {children}
+        </tr>
+      )
     }
+
     var habitRows = this.props.habits.map(function(habit) {
       return (
-        <Row>
-          <HabitDetails {...habit} />
-          <HabitDelete />
-          <HabitUpdate />
+        <Row key={habit.id} class="habitRow">
+          <td>{habit.title}
+            <HabitDayStatus day="m" />
+            <HabitDayStatus day="t" />
+            <HabitDayStatus day="w" />
+            <HabitDayStatus day="th" />
+            <HabitDayStatus day="f" />
+            <HabitDayStatus day="sa" />
+            <HabitDayStatus day="sn" />
+          </td>
+          <td>{habit.description}</td>
+          <td><a value="update" className="habitUpdate below success button">Update</a></td>
+          <td><a value="delete" className="habitDelete below alert button">Delete</a></td>
         </Row>
       );
     })
     return (
-      <div className="habitRow">
+      <tbody>
         {habitRows}
-      </div>
+      </tbody>
     );
   }
-
-
 }
 
 export default HabitRow;

@@ -3,22 +3,8 @@ a.back_button {
   margin-bottom: 0px;
 }
 
-.table th {
-  text-align: center;
-}
-
-.table {
-  width: 500px;
-  margin: 0px auto;
-}
-
 h1 {
   text-align: center;
-}
-
-.col-centered{
-    float: none;
-    margin: 0 auto;
 }
 
 h4 {

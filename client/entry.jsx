@@ -3,7 +3,6 @@ import {render} from 'react-dom';
 import $ from 'jquery';
 import HabitForm from './components/HabitForm.jsx';
 import HabitList from './components/HabitList.jsx';
-import HabitLabelRow from './components/HabitLabelRow.jsx';
 
 class HabitBox extends React.Component {
   constructor(props) {
@@ -55,11 +54,18 @@ class HabitBox extends React.Component {
   render () {
     return (
       <div className="habitBox">
-        <p>Hello, world! I am a HabitBox.</p>
-        <HabitForm onHabitSubmit={this.handleHabitSubmit} />
-        <h1>Habits</h1>
-        <HabitLabelRow labels={this.state.labels}/>
-        <HabitList habits={this.state.habits} />
+        <div className="row">
+          <div className="small-6 small-centered columns">
+            <p>Add New Habit:</p>
+            <HabitForm onHabitSubmit={this.handleHabitSubmit} />
+          </div>
+        </div>
+        <div className="row">
+          <div className="small-10 small-centered columns">
+            <h1>Habits</h1>
+            <HabitList habits={this.state.habits} labels={this.state.labels} />
+          </div>
+        </div>
       </div>
     );
   }

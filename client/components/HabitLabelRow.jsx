@@ -7,9 +7,9 @@ class HabitLabelRow extends React.Component {
 
   render () {
     return (
-      <div className="habitLabelRow">
+      <th>
         {this.props.labels}
-      </div>
+      </th>
     );
   }
 }
