@@ -1,28 +1,26 @@
-<p>Habitual is a habit tracking app.</p>
+# Habitual
+### habit tracking app
 
-<p>
-`$ npm run build` runs Webpack in production mode, which minimizes the bundle file automatically
-`$ npm run dev` runs Webpack in watch mode.</p>
+
+* `$ npm run build` runs Webpack in production mode, which minimizes the bundle file automatically
+* `$ npm run dev` runs Webpack in watch mode.
 
 
 **TODO:**
-```
-<ul>
-* [x] complete Entry component
-* [x] complete HabitForm component
-* [x] complete HabitLabelRow component
-* [x] complete HabitList component
-* [x] complete HabitDetails component
-* [x] switch from using `tables` to using `spans` and `divs`
-* [ ] complete HabitStatus component - add in `skip` capability
-* [ ] complete HabitUpdate component
-* [ ] complete HabitDelete component
-* [ ] complete table drop down on click animation
-* [ ] write tests
-* [ ] add styling
-* [ ] create user log in
-</ul>
-```
-<p>
+
+- [x] complete Entry component
+- [x] complete HabitForm component
+- [x] complete HabitLabelRow component
+- [x] complete HabitList component
+- [x] complete HabitDetails component
+- [x] switch from using `tables` to using `spans` and `divs`
+- [ ] complete HabitStatus component - add in `skip` capability
+- [ ] complete HabitUpdate component
+- [ ] complete HabitDelete component
+- [ ] complete table drop down on click animation
+- [ ] write tests
+- [ ] add styling
+- [ ] create user log in
+
+
 *current issues:*
-</p>
