@@ -1,5 +1,5 @@
 import React from 'react';
-import HabitDetails from './HabitDetails.jsx';
+// import HabitDetails from './HabitDetails.jsx';
 import HabitDayStatus from './HabitDayStatus.jsx';
 // import HabitDelete from './HabitDelete.jsx';
 // import HabitUpdate from './HabitUpdate.jsx';
@@ -12,16 +12,19 @@ class HabitRow extends React.Component {
   render () {
     const Row = ({ children }) => {
       return (
-        <tr>
+        <div>
           {children}
-        </tr>
+        </div>
       )
     }
 
     var habitRows = this.props.habits.map(function(habit) {
       return (
-        <Row key={habit.id} class="habitRow">
-          <td>{habit.title}
+        <Row key={habit.id} className="small-12 columns">
+          <div className="dayTitle small-4 columns">
+            {habit.title}
+          </div>
+          <div className="dayStatus small-8 columns">
             <HabitDayStatus day="m" />
             <HabitDayStatus day="t" />
             <HabitDayStatus day="w" />
@@ -29,17 +32,22 @@ class HabitRow extends React.Component {
             <HabitDayStatus day="f" />
             <HabitDayStatus day="sa" />
             <HabitDayStatus day="sn" />
-          </td>
-          <td>{habit.description}</td>
-          <td><a value="update" className="habitUpdate below success button">Update</a></td>
-          <td><a value="delete" className="habitDelete below alert button">Delete</a></td>
+          </div>
+          <div className="dayDesc small-2 columns">
+            {habit.description}
+          </div>
+          <div className="dayButtons small-10 columns">
+            <a value="update" className="habitUpdate below button">Update</a>
+            <a value="delete" className="habitDelete below button">Delete</a>
+          </div>
         </Row>
       );
     })
+
     return (
-      <tbody>
+      <div>
         {habitRows}
-      </tbody>
+      </div>
     );
   }
 }

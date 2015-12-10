@@ -11,14 +11,10 @@ class HabitList extends React.Component {
 
   render() {
     return (
-      <table className="habitList">
-        <thead>
-          <tr>
-          <HabitLabelRow labels={this.props.labels} />
-          </tr>
-        </thead>
-          <HabitRow habits={this.props.habits} />
-      </table>
+      <div className="habitList row">
+        <HabitLabelRow labels={this.props.labels} />
+        <HabitRow habits={this.props.habits} />
+      </div>
     );
   }
 }

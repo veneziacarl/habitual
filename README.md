@@ -13,7 +13,7 @@
 - [x] complete HabitLabelRow component
 - [x] complete HabitList component
 - [x] complete HabitDetails component
-- [x] switch from using `tables` to using `spans` and `divs`
+- [ ] switch from using `tables` to using `spans` and `divs`
 - [ ] complete HabitStatus component - add in `skip` capability
 - [ ] complete HabitUpdate component
 - [ ] complete HabitDelete component

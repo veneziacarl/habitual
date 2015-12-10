@@ -7,7 +7,7 @@ class HabitDetails extends React.Component {
 
   render () {
     return (
-      <div className="habitDetails">
+      <div>
         <p>{this.props.title}</p>
         <p>{this.props.description}</p>
       </div>

@@ -7,9 +7,9 @@ class HabitLabelRow extends React.Component {
 
   render () {
     return (
-      <th>
+      <div className="dayLabels small-8 small-centered columns">
         {this.props.labels}
-      </th>
+      </div>
     );
   }
 }

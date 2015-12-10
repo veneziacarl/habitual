@@ -87,7 +87,7 @@
 	
 	    _this.state = {
 	      habits: [],
-	      labels: ["Actions", "Habits", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"] };
+	      labels: ["Habits", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"] };
 	    _this.handleHabitSubmit = _this.handleHabitSubmit.bind(_this);
 	    return _this;
 	  }
@@ -142,7 +142,7 @@
 	          { className: 'row' },
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'small-6 small-centered columns' },
+	            { className: 'small-10 small-centered columns' },
 	            _react2.default.createElement(
 	              'p',
 	              null,
@@ -153,17 +153,13 @@
 	        ),
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'row' },
+	          { className: 'small-12 small-centered columns' },
 	          _react2.default.createElement(
-	            'div',
-	            { className: 'small-10 small-centered columns' },
-	            _react2.default.createElement(
-	              'h1',
-	              null,
-	              'Habits'
-	            ),
-	            _react2.default.createElement(_HabitList2.default, { habits: this.state.habits, labels: this.state.labels })
-	          )
+	            'h1',
+	            null,
+	            'Habits'
+	          ),
+	          _react2.default.createElement(_HabitList2.default, { habits: this.state.habits, labels: this.state.labels })
 	        )
 	      );
 	    }
@@ -29595,17 +29591,9 @@
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
-	        'table',
-	        { className: 'habitList' },
-	        _react2.default.createElement(
-	          'thead',
-	          null,
-	          _react2.default.createElement(
-	            'tr',
-	            null,
-	            _react2.default.createElement(_HabitLabelRow2.default, { labels: this.props.labels })
-	          )
-	        ),
+	        'div',
+	        { className: 'habitList row' },
+	        _react2.default.createElement(_HabitLabelRow2.default, { labels: this.props.labels }),
 	        _react2.default.createElement(_HabitRow2.default, { habits: this.props.habits })
 	      );
 	    }
@@ -29623,7 +29611,7 @@
   \********************************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 	
@@ -29653,18 +29641,18 @@
 	  }
 	
 	  _createClass(HabitDetails, [{
-	    key: "render",
+	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
-	        "div",
-	        { className: "habitDetails" },
+	        'div',
+	        null,
 	        _react2.default.createElement(
-	          "p",
+	          'p',
 	          null,
 	          this.props.title
 	        ),
 	        _react2.default.createElement(
-	          "p",
+	          'p',
 	          null,
 	          this.props.description
 	        )
@@ -29702,10 +29690,6 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _HabitDetails = __webpack_require__(/*! ./HabitDetails.jsx */ 162);
-	
-	var _HabitDetails2 = _interopRequireDefault(_HabitDetails);
-	
 	var _HabitDayStatus = __webpack_require__(/*! ./HabitDayStatus.jsx */ 164);
 	
 	var _HabitDayStatus2 = _interopRequireDefault(_HabitDayStatus);
@@ -29717,6 +29701,7 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	// import HabitDetails from './HabitDetails.jsx';
 	
 	// import HabitDelete from './HabitDelete.jsx';
 	// import HabitUpdate from './HabitUpdate.jsx';
@@ -29737,7 +29722,7 @@
 	        var children = _ref.children;
 	
 	        return _react2.default.createElement(
-	          'tr',
+	          'div',
 	          null,
 	          children
 	        );
@@ -29746,11 +29731,15 @@
 	      var habitRows = this.props.habits.map(function (habit) {
 	        return _react2.default.createElement(
 	          Row,
-	          { key: habit.id, 'class': 'habitRow' },
+	          { key: habit.id, className: 'small-12 columns' },
 	          _react2.default.createElement(
-	            'td',
-	            null,
-	            habit.title,
+	            'div',
+	            { className: 'dayTitle small-4 columns' },
+	            habit.title
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'dayStatus small-8 columns' },
 	            _react2.default.createElement(_HabitDayStatus2.default, { day: 'm' }),
 	            _react2.default.createElement(_HabitDayStatus2.default, { day: 't' }),
 	            _react2.default.createElement(_HabitDayStatus2.default, { day: 'w' }),
@@ -29760,32 +29749,29 @@
 	            _react2.default.createElement(_HabitDayStatus2.default, { day: 'sn' })
 	          ),
 	          _react2.default.createElement(
-	            'td',
-	            null,
+	            'div',
+	            { className: 'dayDesc small-2 columns' },
 	            habit.description
 	          ),
 	          _react2.default.createElement(
-	            'td',
-	            null,
+	            'div',
+	            { className: 'dayButtons small-10 columns' },
 	            _react2.default.createElement(
 	              'a',
-	              { value: 'update', className: 'habitUpdate below success button' },
+	              { value: 'update', className: 'habitUpdate below button' },
 	              'Update'
-	            )
-	          ),
-	          _react2.default.createElement(
-	            'td',
-	            null,
+	            ),
 	            _react2.default.createElement(
 	              'a',
-	              { value: 'delete', className: 'habitDelete below alert button' },
+	              { value: 'delete', className: 'habitDelete below button' },
 	              'Delete'
 	            )
 	          )
 	        );
 	      });
+	
 	      return _react2.default.createElement(
-	        'tbody',
+	        'div',
 	        null,
 	        habitRows
 	      );
@@ -29869,7 +29855,7 @@
 	      return _react2.default.createElement(
 	        'a',
 	        { type: 'button', className: 'button', onClick: this.handleClick },
-	        'symbol'
+	        symbol
 	      );
 	    }
 	  }]);
@@ -29886,7 +29872,7 @@
   \*********************************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 	
 	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 	
@@ -29916,11 +29902,11 @@
 	  }
 	
 	  _createClass(HabitLabelRow, [{
-	    key: 'render',
+	    key: "render",
 	    value: function render() {
 	      return _react2.default.createElement(
-	        'th',
-	        null,
+	        "div",
+	        { className: "dayLabels small-8 small-centered columns" },
 	        this.props.labels
 	      );
 	    }
