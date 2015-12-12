@@ -12,16 +12,10 @@ h4 {
 }
 
 .dayLabels span {
-  padding: 15px;
-  text-align: center;
+  padding: 20px;
 }
-/*
-.childrow li {
-  list-style: none;
-  display: inline-block;
-  margin-left: 100px;
-}*/
 
-.dayStatus {
-  display: inline-block;
+.dayLabels {
+  margin-bottom: 15px;
+  border-bottom: 2px solid green;
 }

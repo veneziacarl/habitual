@@ -10,7 +10,7 @@ class HabitBox extends React.Component {
     this.state = {
       habits: [],
       labels: [
-      "Habits", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
+      "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun"
       ]};
     this.handleHabitSubmit = this.handleHabitSubmit.bind(this);
   }
@@ -55,13 +55,12 @@ class HabitBox extends React.Component {
     return (
       <div className="habitBox">
         <div className="row">
-          <div className="small-10 small-centered columns">
+          <div className="small-12 small-centered columns">
             <p>Add New Habit:</p>
             <HabitForm onHabitSubmit={this.handleHabitSubmit} />
           </div>
         </div>
         <div className="small-12 small-centered columns">
-          <h1>Habits</h1>
           <HabitList habits={this.state.habits} labels={this.state.labels} />
         </div>
       </div>
