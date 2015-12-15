@@ -69,7 +69,7 @@
 	
 	var _HabitList2 = _interopRequireDefault(_HabitList);
 	
-	var _TimeTabs = __webpack_require__(/*! ./components/TimeTabs.jsx */ 233);
+	var _TimeTabs = __webpack_require__(/*! ./components/TimeTabs.jsx */ 234);
 	
 	var _TimeTabs2 = _interopRequireDefault(_TimeTabs);
 	
@@ -93,23 +93,9 @@
 	      habits: { daily: [], weekly: [], yearly: [] },
 	      labels: ["Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun"] };
 	    _this.handleHabitSubmit = _this.handleHabitSubmit.bind(_this);
+	    _this.handleHabitDelete = _this.handleHabitDelete.bind(_this);
 	    return _this;
 	  }
-	
-	  // loadHabitsFromServer () {
-	  //   $.ajax({
-	  //     url: '/daily.json',
-	  //     method: 'GET',
-	  //     dataType: 'json',
-	  //     cache: false,
-	  //     success: function(habits) {
-	  //       this.setState({habits: habits});
-	  //     }.bind(this),
-	  //     error: function(xhr, status, err) {
-	  //       console.error(this.props, status, err.toString());
-	  //     }.bind(this)
-	  //   });
-	  // }
 	
 	  _createClass(HabitBox, [{
 	    key: 'handleHabitSubmit',
@@ -120,7 +106,6 @@
 	        type: 'POST',
 	        data: habit,
 	        success: (function (habits) {
-	          // var habitType = habits.type
 	          var habitsArray = this.state.habits.daily;
 	          var newHabits = habitsArray.concat(habits);
 	          this.setState({ habits: { daily: newHabits } });
@@ -130,10 +115,29 @@
 	        }).bind(this)
 	      });
 	    }
-	
-	    // TODO: needs to be changed to accomodate more than just daily... issues in success: not allowing me to string interpolate (tab)
-	    // might have to just do a large logic block with separate AJAX calls for different tabs. lame!
-	
+	  }, {
+	    key: 'handleHabitDelete',
+	    value: function handleHabitDelete(habit) {
+	      _jquery2.default.ajax({
+	        url: '/habits',
+	        method: 'DELETE',
+	        data: habit.id,
+	        dataType: "json",
+	        cache: false,
+	        success: (function (habits) {
+	          var habitsArray = this.state.habits.daily;
+	          for (var i = 0; i < habitsArray.length; i++) {
+	            if (habitsArray[i].id === habit.id.id) {
+	              habitsArray.splice(i, 1);
+	            }
+	          }
+	          this.setState({ habits: { daily: habitsArray } });
+	        }).bind(this),
+	        error: (function (xhr, status, err) {
+	          console.error(this.props, status, err.toString());
+	        }).bind(this)
+	      });
+	    }
 	  }, {
 	    key: 'handleOpenTab',
 	    value: function handleOpenTab(tab) {
@@ -178,7 +182,7 @@
 	            habits: this.state.habits,
 	            labels: this.state.labels,
 	            onTabClick: this.handleOpenTab,
-	            onDeleteClick: this.handleHabitDelete })
+	            onHabitDelete: this.handleHabitDelete })
 	        )
 	      );
 	    }
@@ -194,6 +198,21 @@
 	    (0, _reactDom.render)(_react2.default.createElement(HabitBox, null), document.getElementById('react_daily'));
 	  }
 	});
+	
+	// loadHabitsFromServer () {
+	//   $.ajax({
+	//     url: '/daily.json',
+	//     method: 'GET',
+	//     dataType: 'json',
+	//     cache: false,
+	//     success: function(habits) {
+	//       this.setState({habits: habits});
+	//     }.bind(this),
+	//     error: function(xhr, status, err) {
+	//       console.error(this.props, status, err.toString());
+	//     }.bind(this)
+	//   });
+	// }
 
 /***/ },
 /* 1 */
@@ -29596,7 +29615,7 @@
 	
 	var _HabitRow2 = _interopRequireDefault(_HabitRow);
 	
-	var _HabitLabelRow = __webpack_require__(/*! ./HabitLabelRow.jsx */ 232);
+	var _HabitLabelRow = __webpack_require__(/*! ./HabitLabelRow.jsx */ 233);
 	
 	var _HabitLabelRow2 = _interopRequireDefault(_HabitLabelRow);
 	
@@ -29739,7 +29758,7 @@
 	var CardText = __webpack_require__(/*! material-ui/lib/card/card-text */ 228);
 	var CardTitle = __webpack_require__(/*! material-ui/lib/card/card-title */ 229);
 	var FlatButton = __webpack_require__(/*! material-ui/lib/flat-button */ 230);
-	var RaisedButton = __webpack_require__(/*! material-ui/lib/raised-button */ 243);
+	var RaisedButton = __webpack_require__(/*! material-ui/lib/raised-button */ 232);
 	
 	var HabitRow = (function (_React$Component) {
 	  _inherits(HabitRow, _React$Component);
@@ -29755,14 +29774,14 @@
 	
 	  _createClass(HabitRow, [{
 	    key: 'handleDelete',
-	    value: function handleDelete(e) {
-	      e.preventDefault();
-	      var habit_id = this.id;
-	      this.props.onHabitDelete({ habit_id: habit_id });
+	    value: function handleDelete(id) {
+	      this.props.onHabitDelete({ id: id });
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var _this2 = this;
+	
 	      var Row = function Row(_ref) {
 	        var children = _ref.children;
 	
@@ -29776,8 +29795,7 @@
 	      var habitRows = this.props.habits.daily.map(function (habit) {
 	        return _react2.default.createElement(
 	          Row,
-	          { key: habit.id, className: 'habitRow row' },
-	          'debugger;',
+	          { key: habit.id, id: habit.id, className: 'habitRow row' },
 	          _react2.default.createElement(
 	            Card,
 	            { initiallyExpanded: false },
@@ -29795,7 +29813,7 @@
 	              CardActions,
 	              { expandable: true },
 	              _react2.default.createElement(RaisedButton, { label: 'Edit', secondary: true }),
-	              _react2.default.createElement(RaisedButton, { label: 'Delete', primary: true, onClick: this.handleDelete.bind(this) })
+	              _react2.default.createElement(RaisedButton, { label: 'Delete', primary: true, id: habit.id, onClick: _this2.handleDelete.bind(_this2, habit.id) })
 	            )
 	          )
 	        );
@@ -36313,976 +36331,6 @@
 
 /***/ },
 /* 232 */
-/*!*********************************************!*\
-  !*** ./client/components/HabitLabelRow.jsx ***!
-  \*********************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _react = __webpack_require__(/*! react */ 1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var HabitLabelRow = (function (_React$Component) {
-	  _inherits(HabitLabelRow, _React$Component);
-	
-	  function HabitLabelRow(props) {
-	    _classCallCheck(this, HabitLabelRow);
-	
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(HabitLabelRow).call(this, props));
-	  }
-	
-	  _createClass(HabitLabelRow, [{
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement(
-	        'div',
-	        null,
-	        _react2.default.createElement(
-	          'div',
-	          null,
-	          'Habits'
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          null,
-	          this.props.labels
-	        )
-	      );
-	    }
-	  }]);
-	
-	  return HabitLabelRow;
-	})(_react2.default.Component);
-	
-	exports.default = HabitLabelRow;
-
-/***/ },
-/* 233 */
-/*!****************************************!*\
-  !*** ./client/components/TimeTabs.jsx ***!
-  \****************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _HabitRow = __webpack_require__(/*! ./HabitRow.jsx */ 163);
-	
-	var _HabitRow2 = _interopRequireDefault(_HabitRow);
-	
-	var _HabitLabelRow = __webpack_require__(/*! ./HabitLabelRow.jsx */ 232);
-	
-	var _HabitLabelRow2 = _interopRequireDefault(_HabitLabelRow);
-	
-	var _react = __webpack_require__(/*! react */ 1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var injectTapEventPlugin = __webpack_require__(/*! react-tap-event-plugin */ 234);
-	injectTapEventPlugin();
-	var Tabs = __webpack_require__(/*! material-ui/lib/tabs/tabs */ 238);
-	var Tab = __webpack_require__(/*! material-ui/lib/tabs/tab */ 242);
-	
-	var TimeTabs = (function (_React$Component) {
-	  _inherits(TimeTabs, _React$Component);
-	
-	  function TimeTabs(props) {
-	    _classCallCheck(this, TimeTabs);
-	
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(TimeTabs).call(this, props));
-	
-	    _this.state = {
-	      tabType: ''
-	    };
-	    return _this;
-	  }
-	
-	  _createClass(TimeTabs, [{
-	    key: 'handleChange',
-	    value: function handleChange(e) {
-	      e.preventDefault();
-	      var tab = this.props.label.downcase;
-	      this.props.onTabClick(tab);
-	      this.setState({ tabType: tab });
-	    }
-	  }, {
-	    key: 'handleHabitDelete',
-	    value: function handleHabitDelete(habit) {
-	      $.ajax({
-	        url: '/habits.json',
-	        method: 'DELETE',
-	        dataType: 'json',
-	        data: habit,
-	        cache: false,
-	        success: (function (habits) {
-	          var habitsArray = this.state.habits.daily;
-	          var removedHabit = habitsArray.pop();
-	          this.setState({ habits: { daily: habitsArray } });
-	        }).bind(this),
-	        error: (function (xhr, status, err) {
-	          console.error(this.props, status, err.toString());
-	        }).bind(this)
-	      });
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement(
-	        'div',
-	        { className: 'timetabs small-12 medium-8 large-6 small-centered columns' },
-	        _react2.default.createElement(
-	          Tabs,
-	          null,
-	          _react2.default.createElement(
-	            Tab,
-	            { label: 'daily', onClick: this.handleChange.bind(this) },
-	            _react2.default.createElement(
-	              'div',
-	              null,
-	              _react2.default.createElement(_HabitRow2.default, { habits: this.props.habits, tabType: this.state.tabType, onDeleteClick: this.handleHabitDelete.bind(this) })
-	            )
-	          ),
-	          _react2.default.createElement(
-	            Tab,
-	            { label: 'monthly', onClick: this.handleChange.bind(this) },
-	            '(Tab content...)'
-	          ),
-	          _react2.default.createElement(
-	            Tab,
-	            { label: 'yearly', onClick: this.handleChange.bind(this) },
-	            '(tab content..)'
-	          )
-	        )
-	      );
-	    }
-	  }]);
-	
-	  return TimeTabs;
-	})(_react2.default.Component);
-	
-	exports.default = TimeTabs;
-	// <Tabs onChange={this._handleChangeTabs.bind(this)} value={this.state.slideIndex + ''}>
-	//   <Tab label="Tab One" value="0" />
-	//   <Tab label="Tab Two" value="1" />
-	//   <Tab label="Tab Three" value="2" />
-	// </Tabs>
-
-	// <Tabs
-	//   valueLink={{value: this.state.tabsValue, requestChange: this._handleTabsChange.bind(this)}}>
-	//   <Tab label="Tab A" value="a" >
-	//     (Tab content...)
-	//   </Tab>
-	//   <Tab label="Tab B" value="b">
-	//     (Tab content...)
-	//   </Tab>
-	// </Tabs>
-
-/***/ },
-/* 234 */
-/*!**************************************************************!*\
-  !*** ./~/react-tap-event-plugin/src/injectTapEventPlugin.js ***!
-  \**************************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = function injectTapEventPlugin () {
-	  __webpack_require__(/*! react/lib/EventPluginHub */ 31).injection.injectEventPluginsByName({
-	    "TapEventPlugin":       __webpack_require__(/*! ./TapEventPlugin.js */ 235)
-	  });
-	};
-
-
-/***/ },
-/* 235 */
-/*!********************************************************!*\
-  !*** ./~/react-tap-event-plugin/src/TapEventPlugin.js ***!
-  \********************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-2014 Facebook, Inc.
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
-	 *
-	 * @providesModule TapEventPlugin
-	 * @typechecks static-only
-	 */
-	
-	"use strict";
-	
-	var EventConstants = __webpack_require__(/*! react/lib/EventConstants */ 30);
-	var EventPluginUtils = __webpack_require__(/*! react/lib/EventPluginUtils */ 33);
-	var EventPropagators = __webpack_require__(/*! react/lib/EventPropagators */ 73);
-	var SyntheticUIEvent = __webpack_require__(/*! react/lib/SyntheticUIEvent */ 87);
-	var TouchEventUtils = __webpack_require__(/*! ./TouchEventUtils */ 236);
-	var ViewportMetrics = __webpack_require__(/*! react/lib/ViewportMetrics */ 38);
-	
-	var keyOf = __webpack_require__(/*! fbjs/lib/keyOf */ 237);
-	var topLevelTypes = EventConstants.topLevelTypes;
-	
-	var isStartish = EventPluginUtils.isStartish;
-	var isEndish = EventPluginUtils.isEndish;
-	
-	var isTouch = function(topLevelType) {
-	  var touchTypes = [
-	    topLevelTypes.topTouchCancel,
-	    topLevelTypes.topTouchEnd,
-	    topLevelTypes.topTouchStart,
-	    topLevelTypes.topTouchMove
-	  ];
-	  return touchTypes.indexOf(topLevelType) >= 0;
-	}
-	
-	/**
-	 * Number of pixels that are tolerated in between a `touchStart` and `touchEnd`
-	 * in order to still be considered a 'tap' event.
-	 */
-	var tapMoveThreshold = 10;
-	var ignoreMouseThreshold = 750;
-	var startCoords = {x: null, y: null};
-	var lastTouchEvent = null;
-	
-	var Axis = {
-	  x: {page: 'pageX', client: 'clientX', envScroll: 'currentPageScrollLeft'},
-	  y: {page: 'pageY', client: 'clientY', envScroll: 'currentPageScrollTop'}
-	};
-	
-	function getAxisCoordOfEvent(axis, nativeEvent) {
-	  var singleTouch = TouchEventUtils.extractSingleTouch(nativeEvent);
-	  if (singleTouch) {
-	    return singleTouch[axis.page];
-	  }
-	  return axis.page in nativeEvent ?
-	    nativeEvent[axis.page] :
-	    nativeEvent[axis.client] + ViewportMetrics[axis.envScroll];
-	}
-	
-	function getDistance(coords, nativeEvent) {
-	  var pageX = getAxisCoordOfEvent(Axis.x, nativeEvent);
-	  var pageY = getAxisCoordOfEvent(Axis.y, nativeEvent);
-	  return Math.pow(
-	    Math.pow(pageX - coords.x, 2) + Math.pow(pageY - coords.y, 2),
-	    0.5
-	  );
-	}
-	
-	var touchEvents = [
-	  topLevelTypes.topTouchStart,
-	  topLevelTypes.topTouchCancel,
-	  topLevelTypes.topTouchEnd,
-	  topLevelTypes.topTouchMove,
-	];
-	
-	var dependencies = [
-	  topLevelTypes.topMouseDown,
-	  topLevelTypes.topMouseMove,
-	  topLevelTypes.topMouseUp,
-	].concat(touchEvents);
-	
-	var eventTypes = {
-	  touchTap: {
-	    phasedRegistrationNames: {
-	      bubbled: keyOf({onTouchTap: null}),
-	      captured: keyOf({onTouchTapCapture: null})
-	    },
-	    dependencies: dependencies
-	  }
-	};
-	
-	var now = (function() {
-	  if (Date.now) {
-	    return Date.now;
-	  } else {
-	    // IE8 support: http://stackoverflow.com/questions/9430357/please-explain-why-and-how-new-date-works-as-workaround-for-date-now-in
-	    return function () {
-	      return +new Date;
-	    }
-	  }
-	})();
-	
-	var TapEventPlugin = {
-	
-	  tapMoveThreshold: tapMoveThreshold,
-	
-	  ignoreMouseThreshold: ignoreMouseThreshold,
-	
-	  eventTypes: eventTypes,
-	
-	  /**
-	   * @param {string} topLevelType Record from `EventConstants`.
-	   * @param {DOMEventTarget} topLevelTarget The listening component root node.
-	   * @param {string} topLevelTargetID ID of `topLevelTarget`.
-	   * @param {object} nativeEvent Native browser event.
-	   * @return {*} An accumulation of synthetic events.
-	   * @see {EventPluginHub.extractEvents}
-	   */
-	  extractEvents: function(
-	      topLevelType,
-	      topLevelTarget,
-	      topLevelTargetID,
-	      nativeEvent,
-	      nativeEventTarget) {
-	
-	    if (isTouch(topLevelType)) {
-	      lastTouchEvent = now();
-	    } else {
-	      if (lastTouchEvent && (now() - lastTouchEvent) < ignoreMouseThreshold) {
-	        return null;
-	      }
-	    }
-	
-	    if (!isStartish(topLevelType) && !isEndish(topLevelType)) {
-	      return null;
-	    }
-	    var event = null;
-	    var distance = getDistance(startCoords, nativeEvent);
-	    if (isEndish(topLevelType) && distance < tapMoveThreshold) {
-	      event = SyntheticUIEvent.getPooled(
-	        eventTypes.touchTap,
-	        topLevelTargetID,
-	        nativeEvent,
-	        nativeEventTarget
-	      );
-	    }
-	    if (isStartish(topLevelType)) {
-	      startCoords.x = getAxisCoordOfEvent(Axis.x, nativeEvent);
-	      startCoords.y = getAxisCoordOfEvent(Axis.y, nativeEvent);
-	    } else if (isEndish(topLevelType)) {
-	      startCoords.x = 0;
-	      startCoords.y = 0;
-	    }
-	    EventPropagators.accumulateTwoPhaseDispatches(event);
-	    return event;
-	  }
-	
-	};
-	
-	module.exports = TapEventPlugin;
-
-
-/***/ },
-/* 236 */
-/*!*********************************************************!*\
-  !*** ./~/react-tap-event-plugin/src/TouchEventUtils.js ***!
-  \*********************************************************/
-/***/ function(module, exports) {
-
-	/**
-	 * Copyright 2013-2014 Facebook, Inc.
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
-	 *
-	 * @providesModule TouchEventUtils
-	 */
-	
-	var TouchEventUtils = {
-	  /**
-	   * Utility function for common case of extracting out the primary touch from a
-	   * touch event.
-	   * - `touchEnd` events usually do not have the `touches` property.
-	   *   http://stackoverflow.com/questions/3666929/
-	   *   mobile-sarai-touchend-event-not-firing-when-last-touch-is-removed
-	   *
-	   * @param {Event} nativeEvent Native event that may or may not be a touch.
-	   * @return {TouchesObject?} an object with pageX and pageY or null.
-	   */
-	  extractSingleTouch: function(nativeEvent) {
-	    var touches = nativeEvent.touches;
-	    var changedTouches = nativeEvent.changedTouches;
-	    var hasTouches = touches && touches.length > 0;
-	    var hasChangedTouches = changedTouches && changedTouches.length > 0;
-	
-	    return !hasTouches && hasChangedTouches ? changedTouches[0] :
-	           hasTouches ? touches[0] :
-	           nativeEvent;
-	  }
-	};
-	
-	module.exports = TouchEventUtils;
-
-
-/***/ },
-/* 237 */
-/*!******************************************************!*\
-  !*** ./~/react-tap-event-plugin/~/fbjs/lib/keyOf.js ***!
-  \******************************************************/
-/***/ function(module, exports) {
-
-	/**
-	 * Copyright 2013-2015, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule keyOf
-	 */
-	
-	/**
-	 * Allows extraction of a minified key. Let's the build system minify keys
-	 * without losing the ability to dynamically use key strings as values
-	 * themselves. Pass in an object with a single key/val pair and it will return
-	 * you the string key of that single record. Suppose you want to grab the
-	 * value for a key 'className' inside of an object. Key/val minification may
-	 * have aliased that key to be 'xa12'. keyOf({className: null}) will return
-	 * 'xa12' in that case. Resolve keys you want to use once at startup time, then
-	 * reuse those resolutions.
-	 */
-	"use strict";
-	
-	var keyOf = function (oneKeyObj) {
-	  var key;
-	  for (key in oneKeyObj) {
-	    if (!oneKeyObj.hasOwnProperty(key)) {
-	      continue;
-	    }
-	    return key;
-	  }
-	  return null;
-	};
-	
-	module.exports = keyOf;
-
-/***/ },
-/* 238 */
-/*!****************************************!*\
-  !*** ./~/material-ui/lib/tabs/tabs.js ***!
-  \****************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
-	
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-	
-	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-	
-	var React = __webpack_require__(/*! react */ 1);
-	var ReactDOM = __webpack_require__(/*! react-dom */ 158);
-	var TabTemplate = __webpack_require__(/*! ./tabTemplate */ 239);
-	var InkBar = __webpack_require__(/*! ../ink-bar */ 240);
-	var StylePropable = __webpack_require__(/*! ../mixins/style-propable */ 170);
-	var Controllable = __webpack_require__(/*! ../mixins/controllable */ 241);
-	var DefaultRawTheme = __webpack_require__(/*! ../styles/raw-themes/light-raw-theme */ 190);
-	var ThemeManager = __webpack_require__(/*! ../styles/theme-manager */ 194);
-	
-	var Tabs = React.createClass({
-	  displayName: 'Tabs',
-	
-	  mixins: [StylePropable, Controllable],
-	
-	  contextTypes: {
-	    muiTheme: React.PropTypes.object
-	  },
-	
-	  propTypes: {
-	    contentContainerStyle: React.PropTypes.object,
-	    initialSelectedIndex: React.PropTypes.number,
-	    inkBarStyle: React.PropTypes.object,
-	    tabItemContainerStyle: React.PropTypes.object,
-	    tabTemplate: React.PropTypes.func,
-	    style: React.PropTypes.object
-	  },
-	
-	  //for passing default theme context to children
-	  childContextTypes: {
-	    muiTheme: React.PropTypes.object
-	  },
-	
-	  getChildContext: function getChildContext() {
-	    return {
-	      muiTheme: this.state.muiTheme
-	    };
-	  },
-	
-	  getDefaultProps: function getDefaultProps() {
-	    return {
-	      initialSelectedIndex: 0,
-	      tabTemplate: TabTemplate
-	    };
-	  },
-	
-	  getInitialState: function getInitialState() {
-	    var valueLink = this.getValueLink(this.props);
-	    var initialIndex = this.props.initialSelectedIndex;
-	
-	    return {
-	      selectedIndex: valueLink.value ? this._getSelectedIndex(this.props) : initialIndex < this.getTabCount() ? initialIndex : 0,
-	      muiTheme: this.context.muiTheme ? this.context.muiTheme : ThemeManager.getMuiTheme(DefaultRawTheme)
-	    };
-	  },
-	
-	  getEvenWidth: function getEvenWidth() {
-	    return parseInt(window.getComputedStyle(ReactDOM.findDOMNode(this)).getPropertyValue('width'), 10);
-	  },
-	
-	  getTabCount: function getTabCount() {
-	    return React.Children.count(this.props.children);
-	  },
-	
-	  componentWillReceiveProps: function componentWillReceiveProps(newProps, nextContext) {
-	    var valueLink = this.getValueLink(newProps);
-	    var newMuiTheme = nextContext.muiTheme ? nextContext.muiTheme : this.state.muiTheme;
-	
-	    if (valueLink.value) {
-	      this.setState({ selectedIndex: this._getSelectedIndex(newProps) });
-	    }
-	
-	    this.setState({ muiTheme: newMuiTheme });
-	  },
-	
-	  render: function render() {
-	    var _this = this;
-	
-	    var _props = this.props;
-	    var children = _props.children;
-	    var contentContainerStyle = _props.contentContainerStyle;
-	    var initialSelectedIndex = _props.initialSelectedIndex;
-	    var inkBarStyle = _props.inkBarStyle;
-	    var style = _props.style;
-	    var tabWidth = _props.tabWidth;
-	    var tabItemContainerStyle = _props.tabItemContainerStyle;
-	    var tabTemplate = _props.tabTemplate;
-	
-	    var other = _objectWithoutProperties(_props, ['children', 'contentContainerStyle', 'initialSelectedIndex', 'inkBarStyle', 'style', 'tabWidth', 'tabItemContainerStyle', 'tabTemplate']);
-	
-	    var themeVariables = this.state.muiTheme.tabs;
-	    var styles = {
-	      tabItemContainer: {
-	        margin: 0,
-	        padding: 0,
-	        width: '100%',
-	        height: 48,
-	        backgroundColor: themeVariables.backgroundColor,
-	        whiteSpace: 'nowrap',
-	        display: 'table'
-	      }
-	    };
-	
-	    var valueLink = this.getValueLink(this.props);
-	    var tabValue = valueLink.value;
-	    var tabContent = [];
-	
-	    var width = 100 / this.getTabCount() + '%';
-	
-	    var left = 'calc(' + width + '*' + this.state.selectedIndex + ')';
-	
-	    var tabs = React.Children.map(children, function (tab, index) {
-	      if (tab.type.displayName === "Tab") {
-	        if (!tab.props.value && tabValue && process.env.NODE_ENV !== 'production') {
-	          console.error('Tabs value prop has been passed, but Tab ' + index + ' does not have a value prop. Needs value if Tabs is going' + ' to be a controlled component.');
-	        }
-	
-	        tabContent.push(tab.props.children ? React.createElement(tabTemplate, {
-	          key: index,
-	          selected: _this._getSelected(tab, index)
-	        }, tab.props.children) : undefined);
-	
-	        return React.cloneElement(tab, {
-	          key: index,
-	          selected: _this._getSelected(tab, index),
-	          tabIndex: index,
-	          width: width,
-	          onTouchTap: _this._handleTabTouchTap
-	        });
-	      } else {
-	        var type = tab.type.displayName || tab.type;
-	        console.error('Tabs only accepts Tab Components as children. Found ' + type + ' as child number ' + (index + 1) + ' of Tabs');
-	      }
-	    }, this);
-	
-	    var inkBar = this.state.selectedIndex !== -1 ? React.createElement(InkBar, {
-	      left: left,
-	      width: width,
-	      style: inkBarStyle }) : null;
-	
-	    var inkBarContainerWidth = tabItemContainerStyle ? tabItemContainerStyle.width : '100%';
-	
-	    return React.createElement(
-	      'div',
-	      _extends({}, other, {
-	        style: this.prepareStyles(style) }),
-	      React.createElement(
-	        'div',
-	        { style: this.prepareStyles(styles.tabItemContainer, tabItemContainerStyle) },
-	        tabs
-	      ),
-	      React.createElement(
-	        'div',
-	        { style: { width: inkBarContainerWidth } },
-	        inkBar
-	      ),
-	      React.createElement(
-	        'div',
-	        { style: this.prepareStyles(contentContainerStyle) },
-	        tabContent
-	      )
-	    );
-	  },
-	
-	  _getSelectedIndex: function _getSelectedIndex(props) {
-	    var valueLink = this.getValueLink(props);
-	    var selectedIndex = -1;
-	
-	    React.Children.forEach(props.children, function (tab, index) {
-	      if (valueLink.value === tab.props.value) {
-	        selectedIndex = index;
-	      }
-	    });
-	
-	    return selectedIndex;
-	  },
-	
-	  _handleTabTouchTap: function _handleTabTouchTap(value, e, tab) {
-	    var valueLink = this.getValueLink(this.props);
-	    var tabIndex = tab.props.tabIndex;
-	
-	    if (valueLink.value && valueLink.value !== value || this.state.selectedIndex !== tabIndex) {
-	      valueLink.requestChange(value, e, tab);
-	    }
-	
-	    this.setState({ selectedIndex: tabIndex });
-	    tab.props.onActive(tab);
-	  },
-	
-	  _getSelected: function _getSelected(tab, index) {
-	    var valueLink = this.getValueLink(this.props);
-	    return valueLink.value ? valueLink.value === tab.props.value : this.state.selectedIndex === index;
-	  }
-	
-	});
-	
-	module.exports = Tabs;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./~/process/browser.js */ 4)))
-
-/***/ },
-/* 239 */
-/*!***********************************************!*\
-  !*** ./~/material-ui/lib/tabs/tabTemplate.js ***!
-  \***********************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var React = __webpack_require__(/*! react */ 1);
-	
-	var TabTemplate = React.createClass({
-	  displayName: 'TabTemplate',
-	
-	  render: function render() {
-	    var styles = {
-	      'height': 0,
-	      'overflow': 'hidden',
-	      'width': '100%',
-	      'position': 'relative',
-	      'textAlign': 'initial'
-	    };
-	
-	    if (this.props.selected) {
-	      delete styles.height;
-	      delete styles.overflow;
-	    }
-	
-	    return React.createElement(
-	      'div',
-	      { style: styles },
-	      this.props.children
-	    );
-	  }
-	});
-	
-	module.exports = TabTemplate;
-
-/***/ },
-/* 240 */
-/*!**************************************!*\
-  !*** ./~/material-ui/lib/ink-bar.js ***!
-  \**************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-	
-	var React = __webpack_require__(/*! react */ 1);
-	var Transitions = __webpack_require__(/*! ./styles/transitions */ 189);
-	var StylePropable = __webpack_require__(/*! ./mixins/style-propable */ 170);
-	var DefaultRawTheme = __webpack_require__(/*! ./styles/raw-themes/light-raw-theme */ 190);
-	var ThemeManager = __webpack_require__(/*! ./styles/theme-manager */ 194);
-	
-	var InkBar = React.createClass({
-	  displayName: 'InkBar',
-	
-	  contextTypes: {
-	    muiTheme: React.PropTypes.object
-	  },
-	
-	  //for passing default theme context to children
-	  childContextTypes: {
-	    muiTheme: React.PropTypes.object
-	  },
-	
-	  getChildContext: function getChildContext() {
-	    return {
-	      muiTheme: this.state.muiTheme
-	    };
-	  },
-	
-	  propTypes: {
-	    color: React.PropTypes.string,
-	    left: React.PropTypes.string.isRequired,
-	    width: React.PropTypes.string.isRequired,
-	    style: React.PropTypes.object
-	  },
-	
-	  getInitialState: function getInitialState() {
-	    return {
-	      muiTheme: this.context.muiTheme ? this.context.muiTheme : ThemeManager.getMuiTheme(DefaultRawTheme)
-	    };
-	  },
-	
-	  //to update theme inside state whenever a new theme is passed down
-	  //from the parent / owner using context
-	  componentWillReceiveProps: function componentWillReceiveProps(nextProps, nextContext) {
-	    var newMuiTheme = nextContext.muiTheme ? nextContext.muiTheme : this.state.muiTheme;
-	    this.setState({ muiTheme: newMuiTheme });
-	  },
-	
-	  mixins: [StylePropable],
-	
-	  render: function render() {
-	    var _props = this.props;
-	    var color = _props.color;
-	    var left = _props.left;
-	    var width = _props.width;
-	    var style = _props.style;
-	
-	    var other = _objectWithoutProperties(_props, ['color', 'left', 'width', 'style']);
-	
-	    var colorStyle = color ? { backgroundColor: color } : undefined;
-	    var styles = this.prepareStyles({
-	      left: left,
-	      width: width,
-	      bottom: 0,
-	      display: 'block',
-	      backgroundColor: this.state.muiTheme.inkBar.backgroundColor,
-	      height: 2,
-	      marginTop: -2,
-	      position: 'relative',
-	      transition: Transitions.easeOut('1s', 'left')
-	    }, this.props.style, colorStyle);
-	
-	    return React.createElement(
-	      'div',
-	      { style: styles },
-	      ' '
-	    );
-	  }
-	
-	});
-	
-	module.exports = InkBar;
-
-/***/ },
-/* 241 */
-/*!**************************************************!*\
-  !*** ./~/material-ui/lib/mixins/controllable.js ***!
-  \**************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var React = __webpack_require__(/*! react */ 1);
-	
-	module.exports = {
-	
-	  propTypes: {
-	    onChange: React.PropTypes.func,
-	    value: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.array]),
-	    valueLink: React.PropTypes.shape({
-	      value: React.PropTypes.string.isRequired,
-	      requestChange: React.PropTypes.func.isRequired
-	    })
-	  },
-	
-	  getDefaultProps: function getDefaultProps() {
-	    return {
-	      onChange: function onChange() {}
-	    };
-	  },
-	
-	  getValueLink: function getValueLink(props) {
-	    return props.valueLink || {
-	      value: props.value,
-	      requestChange: props.onChange
-	    };
-	  }
-	
-	};
-
-/***/ },
-/* 242 */
-/*!***************************************!*\
-  !*** ./~/material-ui/lib/tabs/tab.js ***!
-  \***************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-	
-	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-	
-	var React = __webpack_require__(/*! react */ 1);
-	var StylePropable = __webpack_require__(/*! ../mixins/style-propable */ 170);
-	var DefaultRawTheme = __webpack_require__(/*! ../styles/raw-themes/light-raw-theme */ 190);
-	var ThemeManager = __webpack_require__(/*! ../styles/theme-manager */ 194);
-	
-	var Tab = React.createClass({
-	  displayName: 'Tab',
-	
-	  mixins: [StylePropable],
-	
-	  contextTypes: {
-	    muiTheme: React.PropTypes.object
-	  },
-	
-	  propTypes: {
-	    onTouchTap: React.PropTypes.func,
-	    label: React.PropTypes.node,
-	    onActive: React.PropTypes.func,
-	    selected: React.PropTypes.bool,
-	    width: React.PropTypes.string,
-	    value: React.PropTypes.string,
-	    style: React.PropTypes.object
-	  },
-	
-	  //for passing default theme context to children
-	  childContextTypes: {
-	    muiTheme: React.PropTypes.object
-	  },
-	
-	  getChildContext: function getChildContext() {
-	    return {
-	      muiTheme: this.state.muiTheme
-	    };
-	  },
-	
-	  getDefaultProps: function getDefaultProps() {
-	    return {
-	      onActive: function onActive() {},
-	      onTouchTap: function onTouchTap() {}
-	    };
-	  },
-	
-	  getInitialState: function getInitialState() {
-	    return {
-	      muiTheme: this.context.muiTheme ? this.context.muiTheme : ThemeManager.getMuiTheme(DefaultRawTheme)
-	    };
-	  },
-	
-	  //to update theme inside state whenever a new theme is passed down
-	  //from the parent / owner using context
-	  componentWillReceiveProps: function componentWillReceiveProps(nextProps, nextContext) {
-	    var newMuiTheme = nextContext.muiTheme ? nextContext.muiTheme : this.state.muiTheme;
-	    this.setState({ muiTheme: newMuiTheme });
-	  },
-	
-	  render: function render() {
-	    var _props = this.props;
-	    var label = _props.label;
-	    var onActive = _props.onActive;
-	    var onTouchTap = _props.onTouchTap;
-	    var selected = _props.selected;
-	    var style = _props.style;
-	    var value = _props.value;
-	    var width = _props.width;
-	
-	    var other = _objectWithoutProperties(_props, ['label', 'onActive', 'onTouchTap', 'selected', 'style', 'value', 'width']);
-	
-	    var styles = this.prepareStyles({
-	      display: 'table-cell',
-	      cursor: 'pointer',
-	      textAlign: 'center',
-	      verticalAlign: 'middle',
-	      height: 48,
-	      color: selected ? this.state.muiTheme.tabs.selectedTextColor : this.state.muiTheme.tabs.textColor,
-	      outline: 'none',
-	      fontSize: 14,
-	      fontWeight: 500,
-	      whiteSpace: 'initial',
-	      fontFamily: this.state.muiTheme.rawTheme.fontFamily,
-	      boxSizing: 'border-box',
-	      width: width
-	    }, style);
-	
-	    return React.createElement(
-	      'div',
-	      _extends({}, other, {
-	        style: styles,
-	        onTouchTap: this._handleTouchTap }),
-	      label
-	    );
-	  },
-	
-	  _handleTouchTap: function _handleTouchTap(e) {
-	    this.props.onTouchTap(this.props.value, e, this);
-	  }
-	
-	});
-	
-	module.exports = Tab;
-
-/***/ },
-/* 243 */
 /*!********************************************!*\
   !*** ./~/material-ui/lib/raised-button.js ***!
   \********************************************/
@@ -37565,6 +36613,968 @@
 	});
 	
 	module.exports = RaisedButton;
+
+/***/ },
+/* 233 */
+/*!*********************************************!*\
+  !*** ./client/components/HabitLabelRow.jsx ***!
+  \*********************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(/*! react */ 1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var HabitLabelRow = (function (_React$Component) {
+	  _inherits(HabitLabelRow, _React$Component);
+	
+	  function HabitLabelRow(props) {
+	    _classCallCheck(this, HabitLabelRow);
+	
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(HabitLabelRow).call(this, props));
+	  }
+	
+	  _createClass(HabitLabelRow, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          'Habits'
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          this.props.labels
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return HabitLabelRow;
+	})(_react2.default.Component);
+	
+	exports.default = HabitLabelRow;
+
+/***/ },
+/* 234 */
+/*!****************************************!*\
+  !*** ./client/components/TimeTabs.jsx ***!
+  \****************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _HabitRow = __webpack_require__(/*! ./HabitRow.jsx */ 163);
+	
+	var _HabitRow2 = _interopRequireDefault(_HabitRow);
+	
+	var _HabitLabelRow = __webpack_require__(/*! ./HabitLabelRow.jsx */ 233);
+	
+	var _HabitLabelRow2 = _interopRequireDefault(_HabitLabelRow);
+	
+	var _react = __webpack_require__(/*! react */ 1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _jquery = __webpack_require__(/*! jquery */ 159);
+	
+	var _jquery2 = _interopRequireDefault(_jquery);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var injectTapEventPlugin = __webpack_require__(/*! react-tap-event-plugin */ 235);
+	injectTapEventPlugin();
+	var Tabs = __webpack_require__(/*! material-ui/lib/tabs/tabs */ 239);
+	var Tab = __webpack_require__(/*! material-ui/lib/tabs/tab */ 243);
+	
+	var TimeTabs = (function (_React$Component) {
+	  _inherits(TimeTabs, _React$Component);
+	
+	  function TimeTabs(props) {
+	    _classCallCheck(this, TimeTabs);
+	
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(TimeTabs).call(this, props));
+	
+	    _this.state = {
+	      tabType: ''
+	    };
+	    _this.handleDelete = _this.handleDelete.bind(_this);
+	    return _this;
+	  }
+	
+	  _createClass(TimeTabs, [{
+	    key: 'handleChange',
+	    value: function handleChange(e) {
+	      e.preventDefault();
+	      var tab = this.props.label;
+	      this.props.onTabClick(tab);
+	      this.setState({ tabType: tab });
+	    }
+	  }, {
+	    key: 'handleDelete',
+	    value: function handleDelete(id) {
+	      this.props.onHabitDelete({ id: id });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'timetabs small-12 medium-8 large-6 small-centered columns' },
+	        _react2.default.createElement(
+	          Tabs,
+	          null,
+	          _react2.default.createElement(
+	            Tab,
+	            { label: 'daily', onClick: this.handleChange.bind(this) },
+	            _react2.default.createElement(
+	              'div',
+	              null,
+	              _react2.default.createElement(_HabitRow2.default, { habits: this.props.habits, tabType: this.state.tabType, onHabitDelete: this.handleDelete })
+	            )
+	          ),
+	          _react2.default.createElement(
+	            Tab,
+	            { label: 'monthly', onClick: this.handleChange.bind(this) },
+	            '(Tab content...)'
+	          ),
+	          _react2.default.createElement(
+	            Tab,
+	            { label: 'yearly', onClick: this.handleChange.bind(this) },
+	            '(tab content..)'
+	          )
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return TimeTabs;
+	})(_react2.default.Component);
+	
+	exports.default = TimeTabs;
+	
+	// <Tabs onChange={this._handleChangeTabs.bind(this)} value={this.state.slideIndex + ''}>
+	//   <Tab label="Tab One" value="0" />
+	//   <Tab label="Tab Two" value="1" />
+	//   <Tab label="Tab Three" value="2" />
+	// </Tabs>
+
+	// <Tabs
+	//   valueLink={{value: this.state.tabsValue, requestChange: this._handleTabsChange.bind(this)}}>
+	//   <Tab label="Tab A" value="a" >
+	//     (Tab content...)
+	//   </Tab>
+	//   <Tab label="Tab B" value="b">
+	//     (Tab content...)
+	//   </Tab>
+	// </Tabs>
+
+/***/ },
+/* 235 */
+/*!**************************************************************!*\
+  !*** ./~/react-tap-event-plugin/src/injectTapEventPlugin.js ***!
+  \**************************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = function injectTapEventPlugin () {
+	  __webpack_require__(/*! react/lib/EventPluginHub */ 31).injection.injectEventPluginsByName({
+	    "TapEventPlugin":       __webpack_require__(/*! ./TapEventPlugin.js */ 236)
+	  });
+	};
+
+
+/***/ },
+/* 236 */
+/*!********************************************************!*\
+  !*** ./~/react-tap-event-plugin/src/TapEventPlugin.js ***!
+  \********************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-2014 Facebook, Inc.
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 * @providesModule TapEventPlugin
+	 * @typechecks static-only
+	 */
+	
+	"use strict";
+	
+	var EventConstants = __webpack_require__(/*! react/lib/EventConstants */ 30);
+	var EventPluginUtils = __webpack_require__(/*! react/lib/EventPluginUtils */ 33);
+	var EventPropagators = __webpack_require__(/*! react/lib/EventPropagators */ 73);
+	var SyntheticUIEvent = __webpack_require__(/*! react/lib/SyntheticUIEvent */ 87);
+	var TouchEventUtils = __webpack_require__(/*! ./TouchEventUtils */ 237);
+	var ViewportMetrics = __webpack_require__(/*! react/lib/ViewportMetrics */ 38);
+	
+	var keyOf = __webpack_require__(/*! fbjs/lib/keyOf */ 238);
+	var topLevelTypes = EventConstants.topLevelTypes;
+	
+	var isStartish = EventPluginUtils.isStartish;
+	var isEndish = EventPluginUtils.isEndish;
+	
+	var isTouch = function(topLevelType) {
+	  var touchTypes = [
+	    topLevelTypes.topTouchCancel,
+	    topLevelTypes.topTouchEnd,
+	    topLevelTypes.topTouchStart,
+	    topLevelTypes.topTouchMove
+	  ];
+	  return touchTypes.indexOf(topLevelType) >= 0;
+	}
+	
+	/**
+	 * Number of pixels that are tolerated in between a `touchStart` and `touchEnd`
+	 * in order to still be considered a 'tap' event.
+	 */
+	var tapMoveThreshold = 10;
+	var ignoreMouseThreshold = 750;
+	var startCoords = {x: null, y: null};
+	var lastTouchEvent = null;
+	
+	var Axis = {
+	  x: {page: 'pageX', client: 'clientX', envScroll: 'currentPageScrollLeft'},
+	  y: {page: 'pageY', client: 'clientY', envScroll: 'currentPageScrollTop'}
+	};
+	
+	function getAxisCoordOfEvent(axis, nativeEvent) {
+	  var singleTouch = TouchEventUtils.extractSingleTouch(nativeEvent);
+	  if (singleTouch) {
+	    return singleTouch[axis.page];
+	  }
+	  return axis.page in nativeEvent ?
+	    nativeEvent[axis.page] :
+	    nativeEvent[axis.client] + ViewportMetrics[axis.envScroll];
+	}
+	
+	function getDistance(coords, nativeEvent) {
+	  var pageX = getAxisCoordOfEvent(Axis.x, nativeEvent);
+	  var pageY = getAxisCoordOfEvent(Axis.y, nativeEvent);
+	  return Math.pow(
+	    Math.pow(pageX - coords.x, 2) + Math.pow(pageY - coords.y, 2),
+	    0.5
+	  );
+	}
+	
+	var touchEvents = [
+	  topLevelTypes.topTouchStart,
+	  topLevelTypes.topTouchCancel,
+	  topLevelTypes.topTouchEnd,
+	  topLevelTypes.topTouchMove,
+	];
+	
+	var dependencies = [
+	  topLevelTypes.topMouseDown,
+	  topLevelTypes.topMouseMove,
+	  topLevelTypes.topMouseUp,
+	].concat(touchEvents);
+	
+	var eventTypes = {
+	  touchTap: {
+	    phasedRegistrationNames: {
+	      bubbled: keyOf({onTouchTap: null}),
+	      captured: keyOf({onTouchTapCapture: null})
+	    },
+	    dependencies: dependencies
+	  }
+	};
+	
+	var now = (function() {
+	  if (Date.now) {
+	    return Date.now;
+	  } else {
+	    // IE8 support: http://stackoverflow.com/questions/9430357/please-explain-why-and-how-new-date-works-as-workaround-for-date-now-in
+	    return function () {
+	      return +new Date;
+	    }
+	  }
+	})();
+	
+	var TapEventPlugin = {
+	
+	  tapMoveThreshold: tapMoveThreshold,
+	
+	  ignoreMouseThreshold: ignoreMouseThreshold,
+	
+	  eventTypes: eventTypes,
+	
+	  /**
+	   * @param {string} topLevelType Record from `EventConstants`.
+	   * @param {DOMEventTarget} topLevelTarget The listening component root node.
+	   * @param {string} topLevelTargetID ID of `topLevelTarget`.
+	   * @param {object} nativeEvent Native browser event.
+	   * @return {*} An accumulation of synthetic events.
+	   * @see {EventPluginHub.extractEvents}
+	   */
+	  extractEvents: function(
+	      topLevelType,
+	      topLevelTarget,
+	      topLevelTargetID,
+	      nativeEvent,
+	      nativeEventTarget) {
+	
+	    if (isTouch(topLevelType)) {
+	      lastTouchEvent = now();
+	    } else {
+	      if (lastTouchEvent && (now() - lastTouchEvent) < ignoreMouseThreshold) {
+	        return null;
+	      }
+	    }
+	
+	    if (!isStartish(topLevelType) && !isEndish(topLevelType)) {
+	      return null;
+	    }
+	    var event = null;
+	    var distance = getDistance(startCoords, nativeEvent);
+	    if (isEndish(topLevelType) && distance < tapMoveThreshold) {
+	      event = SyntheticUIEvent.getPooled(
+	        eventTypes.touchTap,
+	        topLevelTargetID,
+	        nativeEvent,
+	        nativeEventTarget
+	      );
+	    }
+	    if (isStartish(topLevelType)) {
+	      startCoords.x = getAxisCoordOfEvent(Axis.x, nativeEvent);
+	      startCoords.y = getAxisCoordOfEvent(Axis.y, nativeEvent);
+	    } else if (isEndish(topLevelType)) {
+	      startCoords.x = 0;
+	      startCoords.y = 0;
+	    }
+	    EventPropagators.accumulateTwoPhaseDispatches(event);
+	    return event;
+	  }
+	
+	};
+	
+	module.exports = TapEventPlugin;
+
+
+/***/ },
+/* 237 */
+/*!*********************************************************!*\
+  !*** ./~/react-tap-event-plugin/src/TouchEventUtils.js ***!
+  \*********************************************************/
+/***/ function(module, exports) {
+
+	/**
+	 * Copyright 2013-2014 Facebook, Inc.
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 * @providesModule TouchEventUtils
+	 */
+	
+	var TouchEventUtils = {
+	  /**
+	   * Utility function for common case of extracting out the primary touch from a
+	   * touch event.
+	   * - `touchEnd` events usually do not have the `touches` property.
+	   *   http://stackoverflow.com/questions/3666929/
+	   *   mobile-sarai-touchend-event-not-firing-when-last-touch-is-removed
+	   *
+	   * @param {Event} nativeEvent Native event that may or may not be a touch.
+	   * @return {TouchesObject?} an object with pageX and pageY or null.
+	   */
+	  extractSingleTouch: function(nativeEvent) {
+	    var touches = nativeEvent.touches;
+	    var changedTouches = nativeEvent.changedTouches;
+	    var hasTouches = touches && touches.length > 0;
+	    var hasChangedTouches = changedTouches && changedTouches.length > 0;
+	
+	    return !hasTouches && hasChangedTouches ? changedTouches[0] :
+	           hasTouches ? touches[0] :
+	           nativeEvent;
+	  }
+	};
+	
+	module.exports = TouchEventUtils;
+
+
+/***/ },
+/* 238 */
+/*!******************************************************!*\
+  !*** ./~/react-tap-event-plugin/~/fbjs/lib/keyOf.js ***!
+  \******************************************************/
+/***/ function(module, exports) {
+
+	/**
+	 * Copyright 2013-2015, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule keyOf
+	 */
+	
+	/**
+	 * Allows extraction of a minified key. Let's the build system minify keys
+	 * without losing the ability to dynamically use key strings as values
+	 * themselves. Pass in an object with a single key/val pair and it will return
+	 * you the string key of that single record. Suppose you want to grab the
+	 * value for a key 'className' inside of an object. Key/val minification may
+	 * have aliased that key to be 'xa12'. keyOf({className: null}) will return
+	 * 'xa12' in that case. Resolve keys you want to use once at startup time, then
+	 * reuse those resolutions.
+	 */
+	"use strict";
+	
+	var keyOf = function (oneKeyObj) {
+	  var key;
+	  for (key in oneKeyObj) {
+	    if (!oneKeyObj.hasOwnProperty(key)) {
+	      continue;
+	    }
+	    return key;
+	  }
+	  return null;
+	};
+	
+	module.exports = keyOf;
+
+/***/ },
+/* 239 */
+/*!****************************************!*\
+  !*** ./~/material-ui/lib/tabs/tabs.js ***!
+  \****************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+	
+	var React = __webpack_require__(/*! react */ 1);
+	var ReactDOM = __webpack_require__(/*! react-dom */ 158);
+	var TabTemplate = __webpack_require__(/*! ./tabTemplate */ 240);
+	var InkBar = __webpack_require__(/*! ../ink-bar */ 241);
+	var StylePropable = __webpack_require__(/*! ../mixins/style-propable */ 170);
+	var Controllable = __webpack_require__(/*! ../mixins/controllable */ 242);
+	var DefaultRawTheme = __webpack_require__(/*! ../styles/raw-themes/light-raw-theme */ 190);
+	var ThemeManager = __webpack_require__(/*! ../styles/theme-manager */ 194);
+	
+	var Tabs = React.createClass({
+	  displayName: 'Tabs',
+	
+	  mixins: [StylePropable, Controllable],
+	
+	  contextTypes: {
+	    muiTheme: React.PropTypes.object
+	  },
+	
+	  propTypes: {
+	    contentContainerStyle: React.PropTypes.object,
+	    initialSelectedIndex: React.PropTypes.number,
+	    inkBarStyle: React.PropTypes.object,
+	    tabItemContainerStyle: React.PropTypes.object,
+	    tabTemplate: React.PropTypes.func,
+	    style: React.PropTypes.object
+	  },
+	
+	  //for passing default theme context to children
+	  childContextTypes: {
+	    muiTheme: React.PropTypes.object
+	  },
+	
+	  getChildContext: function getChildContext() {
+	    return {
+	      muiTheme: this.state.muiTheme
+	    };
+	  },
+	
+	  getDefaultProps: function getDefaultProps() {
+	    return {
+	      initialSelectedIndex: 0,
+	      tabTemplate: TabTemplate
+	    };
+	  },
+	
+	  getInitialState: function getInitialState() {
+	    var valueLink = this.getValueLink(this.props);
+	    var initialIndex = this.props.initialSelectedIndex;
+	
+	    return {
+	      selectedIndex: valueLink.value ? this._getSelectedIndex(this.props) : initialIndex < this.getTabCount() ? initialIndex : 0,
+	      muiTheme: this.context.muiTheme ? this.context.muiTheme : ThemeManager.getMuiTheme(DefaultRawTheme)
+	    };
+	  },
+	
+	  getEvenWidth: function getEvenWidth() {
+	    return parseInt(window.getComputedStyle(ReactDOM.findDOMNode(this)).getPropertyValue('width'), 10);
+	  },
+	
+	  getTabCount: function getTabCount() {
+	    return React.Children.count(this.props.children);
+	  },
+	
+	  componentWillReceiveProps: function componentWillReceiveProps(newProps, nextContext) {
+	    var valueLink = this.getValueLink(newProps);
+	    var newMuiTheme = nextContext.muiTheme ? nextContext.muiTheme : this.state.muiTheme;
+	
+	    if (valueLink.value) {
+	      this.setState({ selectedIndex: this._getSelectedIndex(newProps) });
+	    }
+	
+	    this.setState({ muiTheme: newMuiTheme });
+	  },
+	
+	  render: function render() {
+	    var _this = this;
+	
+	    var _props = this.props;
+	    var children = _props.children;
+	    var contentContainerStyle = _props.contentContainerStyle;
+	    var initialSelectedIndex = _props.initialSelectedIndex;
+	    var inkBarStyle = _props.inkBarStyle;
+	    var style = _props.style;
+	    var tabWidth = _props.tabWidth;
+	    var tabItemContainerStyle = _props.tabItemContainerStyle;
+	    var tabTemplate = _props.tabTemplate;
+	
+	    var other = _objectWithoutProperties(_props, ['children', 'contentContainerStyle', 'initialSelectedIndex', 'inkBarStyle', 'style', 'tabWidth', 'tabItemContainerStyle', 'tabTemplate']);
+	
+	    var themeVariables = this.state.muiTheme.tabs;
+	    var styles = {
+	      tabItemContainer: {
+	        margin: 0,
+	        padding: 0,
+	        width: '100%',
+	        height: 48,
+	        backgroundColor: themeVariables.backgroundColor,
+	        whiteSpace: 'nowrap',
+	        display: 'table'
+	      }
+	    };
+	
+	    var valueLink = this.getValueLink(this.props);
+	    var tabValue = valueLink.value;
+	    var tabContent = [];
+	
+	    var width = 100 / this.getTabCount() + '%';
+	
+	    var left = 'calc(' + width + '*' + this.state.selectedIndex + ')';
+	
+	    var tabs = React.Children.map(children, function (tab, index) {
+	      if (tab.type.displayName === "Tab") {
+	        if (!tab.props.value && tabValue && process.env.NODE_ENV !== 'production') {
+	          console.error('Tabs value prop has been passed, but Tab ' + index + ' does not have a value prop. Needs value if Tabs is going' + ' to be a controlled component.');
+	        }
+	
+	        tabContent.push(tab.props.children ? React.createElement(tabTemplate, {
+	          key: index,
+	          selected: _this._getSelected(tab, index)
+	        }, tab.props.children) : undefined);
+	
+	        return React.cloneElement(tab, {
+	          key: index,
+	          selected: _this._getSelected(tab, index),
+	          tabIndex: index,
+	          width: width,
+	          onTouchTap: _this._handleTabTouchTap
+	        });
+	      } else {
+	        var type = tab.type.displayName || tab.type;
+	        console.error('Tabs only accepts Tab Components as children. Found ' + type + ' as child number ' + (index + 1) + ' of Tabs');
+	      }
+	    }, this);
+	
+	    var inkBar = this.state.selectedIndex !== -1 ? React.createElement(InkBar, {
+	      left: left,
+	      width: width,
+	      style: inkBarStyle }) : null;
+	
+	    var inkBarContainerWidth = tabItemContainerStyle ? tabItemContainerStyle.width : '100%';
+	
+	    return React.createElement(
+	      'div',
+	      _extends({}, other, {
+	        style: this.prepareStyles(style) }),
+	      React.createElement(
+	        'div',
+	        { style: this.prepareStyles(styles.tabItemContainer, tabItemContainerStyle) },
+	        tabs
+	      ),
+	      React.createElement(
+	        'div',
+	        { style: { width: inkBarContainerWidth } },
+	        inkBar
+	      ),
+	      React.createElement(
+	        'div',
+	        { style: this.prepareStyles(contentContainerStyle) },
+	        tabContent
+	      )
+	    );
+	  },
+	
+	  _getSelectedIndex: function _getSelectedIndex(props) {
+	    var valueLink = this.getValueLink(props);
+	    var selectedIndex = -1;
+	
+	    React.Children.forEach(props.children, function (tab, index) {
+	      if (valueLink.value === tab.props.value) {
+	        selectedIndex = index;
+	      }
+	    });
+	
+	    return selectedIndex;
+	  },
+	
+	  _handleTabTouchTap: function _handleTabTouchTap(value, e, tab) {
+	    var valueLink = this.getValueLink(this.props);
+	    var tabIndex = tab.props.tabIndex;
+	
+	    if (valueLink.value && valueLink.value !== value || this.state.selectedIndex !== tabIndex) {
+	      valueLink.requestChange(value, e, tab);
+	    }
+	
+	    this.setState({ selectedIndex: tabIndex });
+	    tab.props.onActive(tab);
+	  },
+	
+	  _getSelected: function _getSelected(tab, index) {
+	    var valueLink = this.getValueLink(this.props);
+	    return valueLink.value ? valueLink.value === tab.props.value : this.state.selectedIndex === index;
+	  }
+	
+	});
+	
+	module.exports = Tabs;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./~/process/browser.js */ 4)))
+
+/***/ },
+/* 240 */
+/*!***********************************************!*\
+  !*** ./~/material-ui/lib/tabs/tabTemplate.js ***!
+  \***********************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(/*! react */ 1);
+	
+	var TabTemplate = React.createClass({
+	  displayName: 'TabTemplate',
+	
+	  render: function render() {
+	    var styles = {
+	      'height': 0,
+	      'overflow': 'hidden',
+	      'width': '100%',
+	      'position': 'relative',
+	      'textAlign': 'initial'
+	    };
+	
+	    if (this.props.selected) {
+	      delete styles.height;
+	      delete styles.overflow;
+	    }
+	
+	    return React.createElement(
+	      'div',
+	      { style: styles },
+	      this.props.children
+	    );
+	  }
+	});
+	
+	module.exports = TabTemplate;
+
+/***/ },
+/* 241 */
+/*!**************************************!*\
+  !*** ./~/material-ui/lib/ink-bar.js ***!
+  \**************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+	
+	var React = __webpack_require__(/*! react */ 1);
+	var Transitions = __webpack_require__(/*! ./styles/transitions */ 189);
+	var StylePropable = __webpack_require__(/*! ./mixins/style-propable */ 170);
+	var DefaultRawTheme = __webpack_require__(/*! ./styles/raw-themes/light-raw-theme */ 190);
+	var ThemeManager = __webpack_require__(/*! ./styles/theme-manager */ 194);
+	
+	var InkBar = React.createClass({
+	  displayName: 'InkBar',
+	
+	  contextTypes: {
+	    muiTheme: React.PropTypes.object
+	  },
+	
+	  //for passing default theme context to children
+	  childContextTypes: {
+	    muiTheme: React.PropTypes.object
+	  },
+	
+	  getChildContext: function getChildContext() {
+	    return {
+	      muiTheme: this.state.muiTheme
+	    };
+	  },
+	
+	  propTypes: {
+	    color: React.PropTypes.string,
+	    left: React.PropTypes.string.isRequired,
+	    width: React.PropTypes.string.isRequired,
+	    style: React.PropTypes.object
+	  },
+	
+	  getInitialState: function getInitialState() {
+	    return {
+	      muiTheme: this.context.muiTheme ? this.context.muiTheme : ThemeManager.getMuiTheme(DefaultRawTheme)
+	    };
+	  },
+	
+	  //to update theme inside state whenever a new theme is passed down
+	  //from the parent / owner using context
+	  componentWillReceiveProps: function componentWillReceiveProps(nextProps, nextContext) {
+	    var newMuiTheme = nextContext.muiTheme ? nextContext.muiTheme : this.state.muiTheme;
+	    this.setState({ muiTheme: newMuiTheme });
+	  },
+	
+	  mixins: [StylePropable],
+	
+	  render: function render() {
+	    var _props = this.props;
+	    var color = _props.color;
+	    var left = _props.left;
+	    var width = _props.width;
+	    var style = _props.style;
+	
+	    var other = _objectWithoutProperties(_props, ['color', 'left', 'width', 'style']);
+	
+	    var colorStyle = color ? { backgroundColor: color } : undefined;
+	    var styles = this.prepareStyles({
+	      left: left,
+	      width: width,
+	      bottom: 0,
+	      display: 'block',
+	      backgroundColor: this.state.muiTheme.inkBar.backgroundColor,
+	      height: 2,
+	      marginTop: -2,
+	      position: 'relative',
+	      transition: Transitions.easeOut('1s', 'left')
+	    }, this.props.style, colorStyle);
+	
+	    return React.createElement(
+	      'div',
+	      { style: styles },
+	      ' '
+	    );
+	  }
+	
+	});
+	
+	module.exports = InkBar;
+
+/***/ },
+/* 242 */
+/*!**************************************************!*\
+  !*** ./~/material-ui/lib/mixins/controllable.js ***!
+  \**************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(/*! react */ 1);
+	
+	module.exports = {
+	
+	  propTypes: {
+	    onChange: React.PropTypes.func,
+	    value: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.array]),
+	    valueLink: React.PropTypes.shape({
+	      value: React.PropTypes.string.isRequired,
+	      requestChange: React.PropTypes.func.isRequired
+	    })
+	  },
+	
+	  getDefaultProps: function getDefaultProps() {
+	    return {
+	      onChange: function onChange() {}
+	    };
+	  },
+	
+	  getValueLink: function getValueLink(props) {
+	    return props.valueLink || {
+	      value: props.value,
+	      requestChange: props.onChange
+	    };
+	  }
+	
+	};
+
+/***/ },
+/* 243 */
+/*!***************************************!*\
+  !*** ./~/material-ui/lib/tabs/tab.js ***!
+  \***************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+	
+	var React = __webpack_require__(/*! react */ 1);
+	var StylePropable = __webpack_require__(/*! ../mixins/style-propable */ 170);
+	var DefaultRawTheme = __webpack_require__(/*! ../styles/raw-themes/light-raw-theme */ 190);
+	var ThemeManager = __webpack_require__(/*! ../styles/theme-manager */ 194);
+	
+	var Tab = React.createClass({
+	  displayName: 'Tab',
+	
+	  mixins: [StylePropable],
+	
+	  contextTypes: {
+	    muiTheme: React.PropTypes.object
+	  },
+	
+	  propTypes: {
+	    onTouchTap: React.PropTypes.func,
+	    label: React.PropTypes.node,
+	    onActive: React.PropTypes.func,
+	    selected: React.PropTypes.bool,
+	    width: React.PropTypes.string,
+	    value: React.PropTypes.string,
+	    style: React.PropTypes.object
+	  },
+	
+	  //for passing default theme context to children
+	  childContextTypes: {
+	    muiTheme: React.PropTypes.object
+	  },
+	
+	  getChildContext: function getChildContext() {
+	    return {
+	      muiTheme: this.state.muiTheme
+	    };
+	  },
+	
+	  getDefaultProps: function getDefaultProps() {
+	    return {
+	      onActive: function onActive() {},
+	      onTouchTap: function onTouchTap() {}
+	    };
+	  },
+	
+	  getInitialState: function getInitialState() {
+	    return {
+	      muiTheme: this.context.muiTheme ? this.context.muiTheme : ThemeManager.getMuiTheme(DefaultRawTheme)
+	    };
+	  },
+	
+	  //to update theme inside state whenever a new theme is passed down
+	  //from the parent / owner using context
+	  componentWillReceiveProps: function componentWillReceiveProps(nextProps, nextContext) {
+	    var newMuiTheme = nextContext.muiTheme ? nextContext.muiTheme : this.state.muiTheme;
+	    this.setState({ muiTheme: newMuiTheme });
+	  },
+	
+	  render: function render() {
+	    var _props = this.props;
+	    var label = _props.label;
+	    var onActive = _props.onActive;
+	    var onTouchTap = _props.onTouchTap;
+	    var selected = _props.selected;
+	    var style = _props.style;
+	    var value = _props.value;
+	    var width = _props.width;
+	
+	    var other = _objectWithoutProperties(_props, ['label', 'onActive', 'onTouchTap', 'selected', 'style', 'value', 'width']);
+	
+	    var styles = this.prepareStyles({
+	      display: 'table-cell',
+	      cursor: 'pointer',
+	      textAlign: 'center',
+	      verticalAlign: 'middle',
+	      height: 48,
+	      color: selected ? this.state.muiTheme.tabs.selectedTextColor : this.state.muiTheme.tabs.textColor,
+	      outline: 'none',
+	      fontSize: 14,
+	      fontWeight: 500,
+	      whiteSpace: 'initial',
+	      fontFamily: this.state.muiTheme.rawTheme.fontFamily,
+	      boxSizing: 'border-box',
+	      width: width
+	    }, style);
+	
+	    return React.createElement(
+	      'div',
+	      _extends({}, other, {
+	        style: styles,
+	        onTouchTap: this._handleTouchTap }),
+	      label
+	    );
+	  },
+	
+	  _handleTouchTap: function _handleTouchTap(e) {
+	    this.props.onTouchTap(this.props.value, e, this);
+	  }
+	
+	});
+	
+	module.exports = Tab;
 
 /***/ }
 /******/ ]);

@@ -16,10 +16,8 @@ class HabitRow extends React.Component {
     var tabType = this.props.tabType;
   }
 
-  handleDelete (e) {
-    e.preventDefault();
-    var habit_id = this.id
-    this.props.onHabitDelete({habit_id});
+  handleDelete (id) {
+    this.props.onHabitDelete({id});
   }
 
   render () {
@@ -31,10 +29,9 @@ class HabitRow extends React.Component {
       )
     }
 
-    var habitRows = this.props.habits.daily.map(function(habit) {
+    var habitRows = this.props.habits.daily.map( habit => {
       return (
-        <Row key={habit.id} className="habitRow row">
-          debugger;
+        <Row key={habit.id} id={habit.id} className="habitRow row">
           <Card initiallyExpanded={false}>
             <CardHeader
               title={habit.title}
@@ -47,7 +44,7 @@ class HabitRow extends React.Component {
             </CardText>
             <CardActions expandable={true}>
               <RaisedButton label="Edit" secondary={true} />
-              <RaisedButton label="Delete" primary={true} onClick={this.handleDelete.bind(this)} />
+              <RaisedButton label="Delete" primary={true} id={habit.id} onClick={this.handleDelete.bind(this, habit.id)} />
             </CardActions>
           </Card>
         </Row>

@@ -37,9 +37,10 @@ post '/habits.json' do
   @habit.to_json
 end
 
-delete "/habits.json" do
-  binding.pry
-  Habit.delete(params[:id])
+delete "/habits" do
+  content_type :json
+  status 200
+  Habit.delete(params[:id]).to_json
 end
 
 put "/daily.json" do

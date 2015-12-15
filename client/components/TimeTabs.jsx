@@ -5,6 +5,8 @@ const Tab = require('material-ui/lib/tabs/tab');
 import HabitRow from './HabitRow.jsx';
 import HabitLabelRow from './HabitLabelRow.jsx';
 import React from 'react';
+import $ from 'jquery';
+
 
 class TimeTabs extends React.Component {
   constructor(props) {
@@ -12,31 +14,19 @@ class TimeTabs extends React.Component {
     this.state = {
       tabType: ''
     }
+    this.handleDelete = this.handleDelete.bind(this);
   }
 
   handleChange (e) {
     e.preventDefault();
-    var tab = this.props.label.downcase;
+    var tab = this.props.label;
     this.props.onTabClick(tab);
     this.setState({tabType: tab})
   }
 
-  handleHabitDelete (habit) {
-    $.ajax({
-      url: '/habits.json',
-      method: 'DELETE',
-      dataType: 'json',
-      data: habit,
-      cache: false,
-      success: function(habits) {
-        var habitsArray = this.state.habits.daily;
-        var removedHabit = habitsArray.pop();
-        this.setState({habits: {daily: habitsArray}});
-      }.bind(this),
-      error: function(xhr, status, err) {
-        console.error(this.props, status, err.toString());
-      }.bind(this)
-    });
+
+  handleDelete (id) {
+    this.props.onHabitDelete({id});
   }
 
   render() {
@@ -45,7 +35,7 @@ class TimeTabs extends React.Component {
         <Tabs>
           <Tab label="daily" onClick={this.handleChange.bind(this)}>
             <div>
-              <HabitRow habits={this.props.habits} tabType={this.state.tabType} onDeleteClick={this.handleHabitDelete.bind(this)} />
+              <HabitRow habits={this.props.habits} tabType={this.state.tabType} onHabitDelete={this.handleDelete} />
             </div>
           </Tab>
           <Tab label="monthly" onClick={this.handleChange.bind(this)}>
@@ -61,6 +51,7 @@ class TimeTabs extends React.Component {
 }
 
 export default TimeTabs;
+
       // <Tabs onChange={this._handleChangeTabs.bind(this)} value={this.state.slideIndex + ''}>
       //   <Tab label="Tab One" value="0" />
       //   <Tab label="Tab Two" value="1" />

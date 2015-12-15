@@ -14,22 +14,9 @@ class HabitBox extends React.Component {
       "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun"
       ]};
     this.handleHabitSubmit = this.handleHabitSubmit.bind(this);
+    this.handleHabitDelete = this.handleHabitDelete.bind(this);
   }
 
-  // loadHabitsFromServer () {
-  //   $.ajax({
-  //     url: '/daily.json',
-  //     method: 'GET',
-  //     dataType: 'json',
-  //     cache: false,
-  //     success: function(habits) {
-  //       this.setState({habits: habits});
-  //     }.bind(this),
-  //     error: function(xhr, status, err) {
-  //       console.error(this.props, status, err.toString());
-  //     }.bind(this)
-  //   });
-  // }
 
   handleHabitSubmit (habit) {
     $.ajax({
@@ -38,7 +25,6 @@ class HabitBox extends React.Component {
       type: 'POST',
       data: habit,
       success: function(habits) {
-        // var habitType = habits.type
         var habitsArray = this.state.habits.daily;
         var newHabits = habitsArray.concat(habits);
         this.setState({habits: {daily: newHabits}});
@@ -49,8 +35,29 @@ class HabitBox extends React.Component {
     });
   }
 
-// TODO: needs to be changed to accomodate more than just daily... issues in success: not allowing me to string interpolate (tab)
-// might have to just do a large logic block with separate AJAX calls for different tabs. lame!
+  handleHabitDelete (habit) {
+    $.ajax({
+      url: '/habits',
+      method: 'DELETE',
+      data: habit.id,
+      dataType: "json",
+      cache: false,
+      success: function(habits) {
+        var habitsArray = this.state.habits.daily;
+        for(var i = 0; i < habitsArray.length; i++) {
+          if(habitsArray[i].id === habit.id.id) {
+             habitsArray.splice(i, 1);
+          }
+        }
+        this.setState({habits: {daily: habitsArray}});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(this.props, status, err.toString());
+      }.bind(this)
+    });
+  }
+
+
   handleOpenTab (tab) {
     $.ajax({
       url: '/' + tab + '.json',
@@ -82,7 +89,7 @@ class HabitBox extends React.Component {
             habits={this.state.habits}
             labels={this.state.labels}
             onTabClick={this.handleOpenTab}
-            onDeleteClick={this.handleHabitDelete}>
+            onHabitDelete={this.handleHabitDelete}>
           </TimeTabs>
         </div>
       </div>
@@ -95,3 +102,22 @@ $(function() {
     render(<HabitBox />, document.getElementById('react_daily'));
   }
 });
+
+
+
+
+
+// loadHabitsFromServer () {
+//   $.ajax({
+//     url: '/daily.json',
+//     method: 'GET',
+//     dataType: 'json',
+//     cache: false,
+//     success: function(habits) {
+//       this.setState({habits: habits});
+//     }.bind(this),
+//     error: function(xhr, status, err) {
+//       console.error(this.props, status, err.toString());
+//     }.bind(this)
+//   });
+// }
