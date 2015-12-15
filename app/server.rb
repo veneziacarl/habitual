@@ -18,17 +18,28 @@ get '/daily' do
 end
 
 get '/daily.json' do
-  @habits = Habit.all
+  @habits = Habit.where(time_type: "daily")
   @habits.to_json
 end
 
-post '/daily.json' do
+get '/monthly.json' do
+  @habits = Habit.where(time_type: "monthly")
+  @habits.to_json
+end
+
+get '/yearly.json' do
+  @habits = Habit.where(time_type: "yearly")
+  @habits.to_json
+end
+
+post '/habits.json' do
   @habit = Habit.create(params)
   @habit.to_json
 end
 
-delete "/daily.json" do
-  
+delete "/habits.json" do
+  binding.pry
+  Habit.delete(params[:id])
 end
 
 put "/daily.json" do

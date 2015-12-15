@@ -11,8 +11,7 @@ class HabitList extends React.Component {
 
   render() {
     return (
-      <div className="habitList row">
-        <HabitLabelRow labels={this.props.labels} />
+      <div>
         <HabitRow habits={this.props.habits} />
       </div>
     );

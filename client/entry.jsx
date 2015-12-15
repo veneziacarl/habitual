@@ -3,26 +3,45 @@ import {render} from 'react-dom';
 import $ from 'jquery';
 import HabitForm from './components/HabitForm.jsx';
 import HabitList from './components/HabitList.jsx';
+import TimeTabs from './components/TimeTabs.jsx';
 
 class HabitBox extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      habits: [],
+      habits: { daily: [], weekly: [], yearly: [] },
       labels: [
       "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun"
       ]};
     this.handleHabitSubmit = this.handleHabitSubmit.bind(this);
   }
 
-  loadHabitsFromServer () {
+  // loadHabitsFromServer () {
+  //   $.ajax({
+  //     url: '/daily.json',
+  //     method: 'GET',
+  //     dataType: 'json',
+  //     cache: false,
+  //     success: function(habits) {
+  //       this.setState({habits: habits});
+  //     }.bind(this),
+  //     error: function(xhr, status, err) {
+  //       console.error(this.props, status, err.toString());
+  //     }.bind(this)
+  //   });
+  // }
+
+  handleHabitSubmit (habit) {
     $.ajax({
-      url: '/daily.json',
-      method: 'GET',
+      url: '/habits.json',
       dataType: 'json',
-      cache: false,
+      type: 'POST',
+      data: habit,
       success: function(habits) {
-        this.setState({habits: habits});
+        // var habitType = habits.type
+        var habitsArray = this.state.habits.daily;
+        var newHabits = habitsArray.concat(habits);
+        this.setState({habits: {daily: newHabits}});
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(this.props, status, err.toString());
@@ -30,16 +49,16 @@ class HabitBox extends React.Component {
     });
   }
 
-  handleHabitSubmit (habit) {
+// TODO: needs to be changed to accomodate more than just daily... issues in success: not allowing me to string interpolate (tab)
+// might have to just do a large logic block with separate AJAX calls for different tabs. lame!
+  handleOpenTab (tab) {
     $.ajax({
-      url: '/daily.json',
+      url: '/' + tab + '.json',
+      method: 'GET',
       dataType: 'json',
-      type: 'POST',
-      data: habit,
+      cache: false,
       success: function(habits) {
-        var habitsArray = this.state.habits;
-        var newHabits = habitsArray.concat(habits);
-        this.setState({habits: newHabits});
+        this.setState({habits:{daily: habits}});
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(this.props, status, err.toString());
@@ -48,20 +67,23 @@ class HabitBox extends React.Component {
   }
 
   componentDidMount () {
-    this.loadHabitsFromServer();
+    this.handleOpenTab('daily');
   }
 
   render () {
     return (
       <div className="habitBox">
-        <div className="row">
-          <div className="small-12 small-centered columns">
-            <p>Add New Habit:</p>
-            <HabitForm onHabitSubmit={this.handleHabitSubmit} />
-          </div>
+        <div>
+          <p>Add New Habit:</p>
+          <HabitForm onHabitSubmit={this.handleHabitSubmit} />
         </div>
-        <div className="small-12 small-centered columns">
-          <HabitList habits={this.state.habits} labels={this.state.labels} />
+        <div>
+          <TimeTabs
+            habits={this.state.habits}
+            labels={this.state.labels}
+            onTabClick={this.handleOpenTab}
+            onDeleteClick={this.handleHabitDelete}>
+          </TimeTabs>
         </div>
       </div>
     );
@@ -71,11 +93,5 @@ class HabitBox extends React.Component {
 $(function() {
   if ($('#react_daily').length) {
     render(<HabitBox />, document.getElementById('react_daily'));
-  }
-});
-
-$(function() {
-  if ($('#react_form').length) {
-    render(<HabitForm />, document.getElementById('react_form'));
   }
 });
