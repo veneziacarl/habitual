@@ -20,25 +20,41 @@ class HabitRow extends React.Component {
 
     var habitRows = this.props.habits.map(function(habit) {
       return (
-        <Row key={habit.id} className="small-12 columns">
-          <div className="dayTitle small-4 columns">
-            {habit.title}
+        <Row key={habit.id} className="habitRow row">
+          <div className="small-10 small-offset-1 columns">
+            <div className="dayTitle small-3 columns">
+              {habit.title}
+            </div>
+            <div className="small-1 columns">
+              <HabitDayStatus day="m" />
+            </div>
+            <div className="small-1 columns">
+              <HabitDayStatus day="t" />
+            </div>
+            <div className="small-1 columns">
+              <HabitDayStatus day="w" />
+            </div>
+            <div className="small-1 columns">
+              <HabitDayStatus day="th" />
+            </div>
+            <div className="small-1 columns">
+              <HabitDayStatus day="f" />
+            </div>
+            <div className="small-1 columns">
+              <HabitDayStatus day="sa" />
+            </div>
+            <div className="small-1 columns end">
+              <HabitDayStatus day="sn" />
+            </div>
           </div>
-          <div className="dayStatus small-8 columns">
-            <HabitDayStatus day="m" />
-            <HabitDayStatus day="t" />
-            <HabitDayStatus day="w" />
-            <HabitDayStatus day="th" />
-            <HabitDayStatus day="f" />
-            <HabitDayStatus day="sa" />
-            <HabitDayStatus day="sn" />
-          </div>
-          <div className="dayDesc small-2 columns">
-            {habit.description}
-          </div>
-          <div className="dayButtons small-10 columns">
-            <a value="update" className="habitUpdate below button">Update</a>
-            <a value="delete" className="habitDelete below button">Delete</a>
+          <div className="small-10 small-offset-1 columns">
+            <div className="dayDesc small-4 columns">
+              {habit.description}
+            </div>
+            <div className="dayButtons small-6 columns">
+              <a value="update" className="habitUpdate warning button">Update</a>
+              <a value="delete" className="habitDelete alert button">Delete</a>
+            </div>
           </div>
         </Row>
       );

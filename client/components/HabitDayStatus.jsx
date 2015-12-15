@@ -11,9 +11,9 @@ class HabitDayStatus extends React.Component {
   }
 
   render () {
-    var symbol = this.state.completed ? 'complete' : 'incomplete';
+    var symbol = this.state.completed ? 'check' : 'X';
     return (
-      <a type="button" className="button" onClick={this.handleClick} >{symbol}</a>
+      <a type="button" className="secondary button" onClick={this.handleClick} >{symbol}</a>
     );
   }
 }

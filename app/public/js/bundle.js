@@ -87,7 +87,7 @@
 	
 	    _this.state = {
 	      habits: [],
-	      labels: ["Habits", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"] };
+	      labels: ["Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun"] };
 	    _this.handleHabitSubmit = _this.handleHabitSubmit.bind(_this);
 	    return _this;
 	  }
@@ -142,7 +142,7 @@
 	          { className: 'row' },
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'small-10 small-centered columns' },
+	            { className: 'small-12 small-centered columns' },
 	            _react2.default.createElement(
 	              'p',
 	              null,
@@ -154,11 +154,6 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'small-12 small-centered columns' },
-	          _react2.default.createElement(
-	            'h1',
-	            null,
-	            'Habits'
-	          ),
 	          _react2.default.createElement(_HabitList2.default, { habits: this.state.habits, labels: this.state.labels })
 	        )
 	      );
@@ -173,6 +168,12 @@
 	(0, _jquery2.default)(function () {
 	  if ((0, _jquery2.default)('#react_daily').length) {
 	    (0, _reactDom.render)(_react2.default.createElement(HabitBox, null), document.getElementById('react_daily'));
+	  }
+	});
+	
+	(0, _jquery2.default)(function () {
+	  if ((0, _jquery2.default)('#react_form').length) {
+	    (0, _reactDom.render)(_react2.default.createElement(_HabitForm2.default, null), document.getElementById('react_form'));
 	  }
 	});
 
@@ -29731,40 +29732,72 @@
 	      var habitRows = this.props.habits.map(function (habit) {
 	        return _react2.default.createElement(
 	          Row,
-	          { key: habit.id, className: 'small-12 columns' },
+	          { key: habit.id, className: 'habitRow row' },
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'dayTitle small-4 columns' },
-	            habit.title
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'dayStatus small-8 columns' },
-	            _react2.default.createElement(_HabitDayStatus2.default, { day: 'm' }),
-	            _react2.default.createElement(_HabitDayStatus2.default, { day: 't' }),
-	            _react2.default.createElement(_HabitDayStatus2.default, { day: 'w' }),
-	            _react2.default.createElement(_HabitDayStatus2.default, { day: 'th' }),
-	            _react2.default.createElement(_HabitDayStatus2.default, { day: 'f' }),
-	            _react2.default.createElement(_HabitDayStatus2.default, { day: 'sa' }),
-	            _react2.default.createElement(_HabitDayStatus2.default, { day: 'sn' })
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'dayDesc small-2 columns' },
-	            habit.description
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'dayButtons small-10 columns' },
+	            { className: 'small-10 small-offset-1 columns' },
 	            _react2.default.createElement(
-	              'a',
-	              { value: 'update', className: 'habitUpdate below button' },
-	              'Update'
+	              'div',
+	              { className: 'dayTitle small-3 columns' },
+	              habit.title
 	            ),
 	            _react2.default.createElement(
-	              'a',
-	              { value: 'delete', className: 'habitDelete below button' },
-	              'Delete'
+	              'div',
+	              { className: 'small-1 columns' },
+	              _react2.default.createElement(_HabitDayStatus2.default, { day: 'm' })
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'small-1 columns' },
+	              _react2.default.createElement(_HabitDayStatus2.default, { day: 't' })
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'small-1 columns' },
+	              _react2.default.createElement(_HabitDayStatus2.default, { day: 'w' })
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'small-1 columns' },
+	              _react2.default.createElement(_HabitDayStatus2.default, { day: 'th' })
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'small-1 columns' },
+	              _react2.default.createElement(_HabitDayStatus2.default, { day: 'f' })
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'small-1 columns' },
+	              _react2.default.createElement(_HabitDayStatus2.default, { day: 'sa' })
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'small-1 columns end' },
+	              _react2.default.createElement(_HabitDayStatus2.default, { day: 'sn' })
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'small-10 small-offset-1 columns' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'dayDesc small-4 columns' },
+	              habit.description
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'dayButtons small-6 columns' },
+	              _react2.default.createElement(
+	                'a',
+	                { value: 'update', className: 'habitUpdate warning button' },
+	                'Update'
+	              ),
+	              _react2.default.createElement(
+	                'a',
+	                { value: 'delete', className: 'habitDelete alert button' },
+	                'Delete'
+	              )
 	            )
 	          )
 	        );
@@ -29851,10 +29884,10 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var symbol = this.state.completed ? 'complete' : 'incomplete';
+	      var symbol = this.state.completed ? 'check' : 'X';
 	      return _react2.default.createElement(
 	        'a',
-	        { type: 'button', className: 'button', onClick: this.handleClick },
+	        { type: 'button', className: 'secondary button', onClick: this.handleClick },
 	        symbol
 	      );
 	    }
@@ -29906,8 +29939,17 @@
 	    value: function render() {
 	      return _react2.default.createElement(
 	        "div",
-	        { className: "dayLabels small-8 small-centered columns" },
-	        this.props.labels
+	        { className: "dayLabels small-10 small-offset-1 columns" },
+	        _react2.default.createElement(
+	          "div",
+	          { className: "small-3 columns" },
+	          "Habits"
+	        ),
+	        _react2.default.createElement(
+	          "div",
+	          { className: "small-7 columns end" },
+	          this.props.labels
+	        )
 	      );
 	    }
 	  }]);
