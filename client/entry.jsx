@@ -3,26 +3,31 @@ import {render} from 'react-dom';
 import $ from 'jquery';
 import HabitForm from './components/HabitForm.jsx';
 import HabitList from './components/HabitList.jsx';
+import TimeTabs from './components/TimeTabs.jsx';
 
 class HabitBox extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      habits: [],
+      habits: { daily: [], weekly: [], yearly: [] },
       labels: [
       "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun"
       ]};
     this.handleHabitSubmit = this.handleHabitSubmit.bind(this);
+    this.handleHabitDelete = this.handleHabitDelete.bind(this);
   }
 
-  loadHabitsFromServer () {
+
+  handleHabitSubmit (habit) {
     $.ajax({
-      url: '/daily.json',
-      method: 'GET',
+      url: '/habits.json',
       dataType: 'json',
-      cache: false,
+      type: 'POST',
+      data: habit,
       success: function(habits) {
-        this.setState({habits: habits});
+        var habitsArray = this.state.habits.daily;
+        var newHabits = habitsArray.concat(habits);
+        this.setState({habits: {daily: newHabits}});
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(this.props, status, err.toString());
@@ -30,16 +35,37 @@ class HabitBox extends React.Component {
     });
   }
 
-  handleHabitSubmit (habit) {
+  handleHabitDelete (habit) {
     $.ajax({
-      url: '/daily.json',
-      dataType: 'json',
-      type: 'POST',
-      data: habit,
+      url: '/habits',
+      method: 'DELETE',
+      data: habit.id,
+      dataType: "json",
+      cache: false,
       success: function(habits) {
-        var habitsArray = this.state.habits;
-        var newHabits = habitsArray.concat(habits);
-        this.setState({habits: newHabits});
+        var habitsArray = this.state.habits.daily;
+        for(var i = 0; i < habitsArray.length; i++) {
+          if(habitsArray[i].id === habit.id.id) {
+             habitsArray.splice(i, 1);
+          }
+        }
+        this.setState({habits: {daily: habitsArray}});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(this.props, status, err.toString());
+      }.bind(this)
+    });
+  }
+
+
+  handleOpenTab (tab) {
+    $.ajax({
+      url: '/' + tab + '.json',
+      method: 'GET',
+      dataType: 'json',
+      cache: false,
+      success: function(habits) {
+        this.setState({habits:{daily: habits}});
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(this.props, status, err.toString());
@@ -48,20 +74,23 @@ class HabitBox extends React.Component {
   }
 
   componentDidMount () {
-    this.loadHabitsFromServer();
+    this.handleOpenTab('daily');
   }
 
   render () {
     return (
       <div className="habitBox">
-        <div className="row">
-          <div className="small-12 small-centered columns">
-            <p>Add New Habit:</p>
-            <HabitForm onHabitSubmit={this.handleHabitSubmit} />
-          </div>
+        <div>
+          <p>Add New Habit:</p>
+          <HabitForm onHabitSubmit={this.handleHabitSubmit} />
         </div>
-        <div className="small-12 small-centered columns">
-          <HabitList habits={this.state.habits} labels={this.state.labels} />
+        <div>
+          <TimeTabs
+            habits={this.state.habits}
+            labels={this.state.labels}
+            onTabClick={this.handleOpenTab}
+            onHabitDelete={this.handleHabitDelete}>
+          </TimeTabs>
         </div>
       </div>
     );
@@ -74,8 +103,21 @@ $(function() {
   }
 });
 
-$(function() {
-  if ($('#react_form').length) {
-    render(<HabitForm />, document.getElementById('react_form'));
-  }
-});
+
+
+
+
+// loadHabitsFromServer () {
+//   $.ajax({
+//     url: '/daily.json',
+//     method: 'GET',
+//     dataType: 'json',
+//     cache: false,
+//     success: function(habits) {
+//       this.setState({habits: habits});
+//     }.bind(this),
+//     error: function(xhr, status, err) {
+//       console.error(this.props, status, err.toString());
+//     }.bind(this)
+//   });
+// }
