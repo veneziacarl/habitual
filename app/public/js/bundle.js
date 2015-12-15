@@ -170,6 +170,12 @@
 	    (0, _reactDom.render)(_react2.default.createElement(HabitBox, null), document.getElementById('react_daily'));
 	  }
 	});
+	
+	(0, _jquery2.default)(function () {
+	  if ((0, _jquery2.default)('#react_form').length) {
+	    (0, _reactDom.render)(_react2.default.createElement(_HabitForm2.default, null), document.getElementById('react_form'));
+	  }
+	});
 
 /***/ },
 /* 1 */

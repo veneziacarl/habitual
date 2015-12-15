@@ -73,3 +73,9 @@ $(function() {
     render(<HabitBox />, document.getElementById('react_daily'));
   }
 });
+
+$(function() {
+  if ($('#react_form').length) {
+    render(<HabitForm />, document.getElementById('react_form'));
+  }
+});
