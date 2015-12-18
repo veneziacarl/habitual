@@ -94,6 +94,7 @@
 	      labels: ["Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun"] };
 	    _this.handleHabitSubmit = _this.handleHabitSubmit.bind(_this);
 	    _this.handleHabitDelete = _this.handleHabitDelete.bind(_this);
+	    _this.handleHabitEdit = _this.handleHabitEdit.bind(_this);
 	    return _this;
 	  }
 	
@@ -132,6 +133,24 @@
 	            }
 	          }
 	          this.setState({ habits: { daily: habitsArray } });
+	        }).bind(this),
+	        error: (function (xhr, status, err) {
+	          console.error(this.props, status, err.toString());
+	        }).bind(this)
+	      });
+	    }
+	  }, {
+	    key: 'handleHabitEdit',
+	    value: function handleHabitEdit(habit) {
+	      _jquery2.default.ajax({
+	        url: '/habits.json',
+	        method: 'PUT',
+	        data: habit.id,
+	        dataType: "json",
+	        cache: false,
+	        success: (function (habits) {
+	          var habitsArray = this.state.habits.daily;
+	          console.log(habitsArray);
 	        }).bind(this),
 	        error: (function (xhr, status, err) {
 	          console.error(this.props, status, err.toString());
@@ -182,7 +201,8 @@
 	            habits: this.state.habits,
 	            labels: this.state.labels,
 	            onTabClick: this.handleOpenTab,
-	            onHabitDelete: this.handleHabitDelete })
+	            onHabitDelete: this.handleHabitDelete,
+	            onHabitEdit: this.handleHabitEdit })
 	        )
 	      );
 	    }
@@ -29778,6 +29798,11 @@
 	      this.props.onHabitDelete({ id: id });
 	    }
 	  }, {
+	    key: 'handleEdit',
+	    value: function handleEdit(id) {
+	      this.props.onHabitEdit({ id: id });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var _this2 = this;
@@ -29812,8 +29837,8 @@
 	            _react2.default.createElement(
 	              CardActions,
 	              { expandable: true },
-	              _react2.default.createElement(RaisedButton, { label: 'Edit', secondary: true }),
-	              _react2.default.createElement(RaisedButton, { label: 'Delete', primary: true, id: habit.id, onClick: _this2.handleDelete.bind(_this2, habit.id) })
+	              _react2.default.createElement(RaisedButton, { label: 'Edit', secondary: true, onClick: _this2.handleEdit.bind(_this2, habit.id) }),
+	              _react2.default.createElement(RaisedButton, { label: 'Delete', primary: true, onClick: _this2.handleDelete.bind(_this2, habit.id) })
 	            )
 	          )
 	        );
@@ -36731,6 +36756,7 @@
 	      tabType: ''
 	    };
 	    _this.handleDelete = _this.handleDelete.bind(_this);
+	    _this.handleEdit = _this.handleEdit.bind(_this);
 	    return _this;
 	  }
 	
@@ -36748,6 +36774,11 @@
 	      this.props.onHabitDelete({ id: id });
 	    }
 	  }, {
+	    key: 'handleEdit',
+	    value: function handleEdit(id) {
+	      this.props.onHabitEdit({ id: id });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
@@ -36762,7 +36793,11 @@
 	            _react2.default.createElement(
 	              'div',
 	              null,
-	              _react2.default.createElement(_HabitRow2.default, { habits: this.props.habits, tabType: this.state.tabType, onHabitDelete: this.handleDelete })
+	              _react2.default.createElement(_HabitRow2.default, {
+	                habits: this.props.habits,
+	                tabType: this.state.tabType,
+	                onHabitDelete: this.handleDelete,
+	                onHabitEdit: this.handleEdit })
 	            )
 	          ),
 	          _react2.default.createElement(

@@ -15,6 +15,7 @@ class TimeTabs extends React.Component {
       tabType: ''
     }
     this.handleDelete = this.handleDelete.bind(this);
+    this.handleEdit = this.handleEdit.bind(this);
   }
 
   handleChange (e) {
@@ -29,13 +30,22 @@ class TimeTabs extends React.Component {
     this.props.onHabitDelete({id});
   }
 
+  handleEdit (id) {
+    this.props.onHabitEdit({id});
+  }
+
   render() {
     return (
       <div className="timetabs small-12 medium-8 large-6 small-centered columns">
         <Tabs>
           <Tab label="daily" onClick={this.handleChange.bind(this)}>
             <div>
-              <HabitRow habits={this.props.habits} tabType={this.state.tabType} onHabitDelete={this.handleDelete} />
+              <HabitRow
+                habits={this.props.habits}
+                tabType={this.state.tabType}
+                onHabitDelete={this.handleDelete}
+                onHabitEdit={this.handleEdit}>
+              </HabitRow>
             </div>
           </Tab>
           <Tab label="monthly" onClick={this.handleChange.bind(this)}>

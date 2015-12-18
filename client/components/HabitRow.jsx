@@ -20,6 +20,10 @@ class HabitRow extends React.Component {
     this.props.onHabitDelete({id});
   }
 
+  handleEdit (id) {
+    this.props.onHabitEdit({id});
+  }
+
   render () {
     const Row = ({ children }) => {
       return (
@@ -43,8 +47,8 @@ class HabitRow extends React.Component {
               {habit.description}
             </CardText>
             <CardActions expandable={true}>
-              <RaisedButton label="Edit" secondary={true} />
-              <RaisedButton label="Delete" primary={true} id={habit.id} onClick={this.handleDelete.bind(this, habit.id)} />
+              <RaisedButton label="Edit" secondary={true} onClick={this.handleEdit.bind(this, habit.id)} />
+              <RaisedButton label="Delete" primary={true} onClick={this.handleDelete.bind(this, habit.id)} />
             </CardActions>
           </Card>
         </Row>

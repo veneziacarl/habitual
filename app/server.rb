@@ -37,6 +37,14 @@ post '/habits.json' do
   @habit.to_json
 end
 
+put '/habits.json' do
+  content_type :json
+  status 200
+  @habit = Habit.find(params[:id])
+  @habit.update(params)
+  @habit.to_json
+end
+
 delete "/habits" do
   content_type :json
   status 200

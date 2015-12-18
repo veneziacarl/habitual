@@ -18,7 +18,7 @@ _phase 1_
 - [x] complete table drop down on click animation
 - [x] add delete path
 - [ ] fix delete path to not have to use habit.id.id (change object being passed in)
-- [ ] add edit button functionality
+- [x] add edit button functionality
 - [ ] change form habit type to radio button from text area
 - [ ] add monthly view
 - [ ] add yearly view
@@ -39,6 +39,10 @@ _future phases_
 - [ ] issues in AJAX success for handleOpenTab: not allowing me to string interpolate (tab) might have to just do a large logic block with separate AJAX calls for different tabs
 
 *gems that I'm not sure how to add to Gemfile yet..*
-npm react-tap-event-plugin
-npm material-ui
+<ul>
+<li>npm react-tap-event-plugin</li>
+<li>npm material-ui</li>
+<li>npm React-Wysiwyg</li>
+</ul>
+
 <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,500' rel='stylesheet' type='text/css'> font
