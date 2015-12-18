@@ -7,6 +7,7 @@ const CardText = require('material-ui/lib/card/card-text');
 const CardTitle = require('material-ui/lib/card/card-title');
 const FlatButton = require('material-ui/lib/flat-button');
 const RaisedButton = require('material-ui/lib/raised-button');
+const ContentEditable = require('react-wysiwyg');
 import React from 'react';
 import HabitDayStatus from './HabitDayStatus.jsx';
 
@@ -14,6 +15,8 @@ class HabitRow extends React.Component {
   constructor(props) {
     super(props);
     var tabType = this.props.tabType;
+    this.state = {text: '', editing: false};
+    console.log(this.state)
   }
 
   handleDelete (id) {
@@ -23,6 +26,19 @@ class HabitRow extends React.Component {
   handleEdit (id) {
     this.props.onHabitEdit({id});
   }
+
+  onChange (text) {
+    // in order to render the updated text,
+    // you need to pass it as a prop to contentEditable.
+    // This gives you increased flexibility.
+    this.state.text = text;
+    console.log(this.state)
+  }
+
+  // enableEditing () {
+  //   // set contenteditable field into editing mode.
+  //   this.state.editing = true;
+  // }
 
   render () {
     const Row = ({ children }) => {
@@ -36,7 +52,7 @@ class HabitRow extends React.Component {
     var habitRows = this.props.habits.daily.map( habit => {
       return (
         <Row key={habit.id} id={habit.id} className="habitRow row">
-          <Card initiallyExpanded={false}>
+          <Card initiallyExpanded={true}>
             <CardHeader
               title={habit.title}
               subtitle="Subtitle"
@@ -45,15 +61,31 @@ class HabitRow extends React.Component {
             </CardHeader>
             <CardText expandable={true}>
               {habit.description}
+              <div>
+                <ContentEditable
+                  tagName='div'
+                  className='edit-field'
+                  onChange={this.onChange.bind(this)}
+                  placeholder={true}
+                  placeholderText={habit.description}
+                  value='Another test'
+                  text={this.state.text}
+                  multiline={true}
+                  autofocus={true}
+                  maxLength={200}
+                  editing={true}
+                  />
+              </div>
             </CardText>
             <CardActions expandable={true}>
-              <RaisedButton label="Edit" secondary={true} onClick={this.handleEdit.bind(this, habit.id)} />
+              <RaisedButton label="Edit" secondary={true} />
               <RaisedButton label="Delete" primary={true} onClick={this.handleDelete.bind(this, habit.id)} />
             </CardActions>
           </Card>
         </Row>
       );
     })
+
 
     return (
       <div>
